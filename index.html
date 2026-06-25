@@ -3,7 +3,15 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>ISA · 청년도약 · 미래적금 환승 실수령액 계산기</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-NX4JK10SS6');
+</script>
+<title>모든 계산기</title>
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
@@ -178,16 +186,67 @@
   .disclaimer{margin-top:14px;background:#FBFCFD;border:1px solid var(--line);border-radius:12px;
     padding:14px 15px;font-size:11px;color:#8B95A1;line-height:1.7}
   .disclaimer b{color:#6B7684}
+
+  /* ---- 헤더 탭 메뉴 (계산기 전환) ---- */
+  .tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 4px 14px;-ms-overflow-style:none;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{
+    flex:0 0 auto;padding:10px 16px;border:1.5px solid var(--line);background:#fff;border-radius:999px;
+    font-size:14px;font-weight:700;color:var(--sub);cursor:pointer;transition:all .18s ease;font-family:inherit;white-space:nowrap
+  }
+  .tabs button:hover{border-color:#C9D0D6}
+  .tabs button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .view[hidden]{display:none}
+
+  /* ---- 데이터 표 ---- */
+  .dtable{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+  .dtable th,.dtable td{padding:9px 8px;text-align:right;border-bottom:1px solid var(--line)}
+  .dtable th:first-child,.dtable td:first-child{text-align:left}
+  .dtable thead th{font-size:12px;color:var(--sub);font-weight:700;border-bottom:1.5px solid var(--line)}
+  .dtable td{font-weight:700}
+  .dtable tr.hl td{background:var(--primary-weak);color:var(--primary-dark)}
+  .dtable tr.hl td:first-child{border-top-left-radius:8px;border-bottom-left-radius:8px}
+  .dtable tr.hl td:last-child{border-top-right-radius:8px;border-bottom-right-radius:8px}
+  .tbl-cap{font-size:13px;font-weight:800;margin:18px 0 8px;display:flex;align-items:center;gap:6px}
+  .tbl-cap:first-child{margin-top:0}
+  .tbl-src{font-size:11px;color:var(--sub);margin-top:7px;line-height:1.5}
+
+  /* ---- 백분위 결과 게이지 ---- */
+  .pct-hero{text-align:center;padding:6px 0 2px}
+  .pct-hero .pct-top{font-size:13px;font-weight:700;color:var(--sub)}
+  .pct-hero .pct-big{font-size:44px;font-weight:800;letter-spacing:-1.5px;color:var(--primary-dark);line-height:1.15;margin:2px 0}
+  .pct-hero .pct-big small{font-size:20px;font-weight:800;margin:0 3px}
+  .pct-hero .pct-sub{font-size:13px;color:var(--sub);font-weight:600}
+  .gauge{position:relative;height:10px;border-radius:8px;margin:18px 2px 6px;
+    background:linear-gradient(90deg,#00C271,#3182F6 55%,#6B5BFF)}
+  .gauge .pin{position:absolute;top:-5px;width:20px;height:20px;border-radius:50%;background:#fff;
+    border:3px solid var(--ink);transform:translateX(-50%);box-shadow:0 2px 6px rgba(0,0,0,.2)}
+  .gauge-scale{display:flex;justify-content:space-between;font-size:10.5px;color:var(--sub);font-weight:600;margin:0 2px}
+  .chips-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+  .stat-chip{flex:1 1 0;min-width:90px;background:#F8F9FB;border-radius:12px;padding:11px 12px}
+  .stat-chip .sc-k{font-size:11.5px;color:var(--sub);font-weight:700}
+  .stat-chip .sc-v{font-size:16px;font-weight:800;margin-top:3px;letter-spacing:-.3px}
+  .stat-chip.up .sc-v{color:var(--green)}
+  .stat-chip.down .sc-v{color:#E5484D}
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">2026 최신 정책 반영</div>
-    <h1>청년 자산형성 실수령액 계산기</h1>
-    <p>청년도약계좌 유지와 미래적금 환승 중 어느 쪽이 유리한지 비교해 드려요.</p>
+    <div class="eyebrow" id="headerEyebrow">2026 최신 정책 반영</div>
+    <h1 id="headerTitle">적금 환승 비교</h1>
+    <p id="headerDesc">청년도약계좌 유지와 미래적금 환승 중 어느 쪽이 유리한지 비교해 드려요.</p>
   </header>
+
+  <!-- ===================== 계산기 선택 메뉴 ===================== -->
+  <nav class="tabs" id="tabs">
+    <button data-tab="savings" class="on">💸 적금 환승 비교</button>
+    <button data-tab="salary">📊 내 연봉 상위 %</button>
+  </nav>
+
+  <!-- ===================== [뷰 1] 적금 환승 비교 ===================== -->
+  <div class="view" id="view-savings">
 
   <!-- ===================== 1. 개인 / 가구 정보 ===================== -->
   <section class="card">
@@ -324,7 +383,127 @@
       실제 가입 및 환승 결정은 반드시 해당 금융기관의 공식 상품설명서, 은행연합회 비교공시, 서민금융진흥원 등 <b>공신력 있는 출처에서 최신 정보를 직접 확인</b>하신 후 본인의 판단과 책임으로 진행하시기 바랍니다. 운영자는 본 계산 결과의 정확성·완전성을 보증하지 않으며, 이를 신뢰해 내린 의사결정으로 발생한 어떠한 손실에 대해서도 책임을 지지 않습니다.
     </div>
   </footer>
-</div>
+
+  </div><!-- /view-savings -->
+
+  <!-- ===================== [뷰 2] 내 연봉 상위 % + 실수령 ===================== -->
+  <div class="view" id="view-salary" hidden>
+
+    <!-- 입력 -->
+    <section class="card">
+      <h2 class="sec-title"><span class="num">1</span>내 정보 입력</h2>
+
+      <div class="field">
+        <label class="lbl">나이 <span class="hint">만 나이 기준</span></label>
+        <div class="amt-row">
+          <input type="number" id="ageInput" value="32" min="19" max="75" step="1" inputmode="numeric" />
+          <span class="unit">세</span>
+        </div>
+        <input type="range" id="ageRange" min="19" max="70" step="1" value="32" />
+        <div class="range-val">내 또래 <b id="ageBandLabel">30~34세</b> 평균소득과 비교해요</div>
+      </div>
+
+      <div class="field">
+        <label class="lbl">연봉(세전 총급여) <span class="hint">연 기준 · 만원 단위</span></label>
+        <div class="amt-row">
+          <input type="number" id="payIncome" value="4500" min="0" step="100" inputmode="numeric" />
+          <span class="unit">만원</span>
+        </div>
+        <input type="range" id="payIncomeRange" min="0" max="15000" step="100" value="4500" />
+        <div class="range-val">연 <b id="payIncomeLabel">4,500만원</b> · 월 <b id="payMonthlyLabel">375만원</b></div>
+      </div>
+
+      <div class="field">
+        <div class="toggle-row" id="rowNontax">
+          <div>
+            <div class="t-txt">비과세 식대 포함</div>
+            <div class="t-sub">월 20만원 식대를 비과세로 처리해 세금을 줄여요</div>
+          </div>
+          <label class="switch"><input type="checkbox" id="nontax" checked><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row" id="rowDependents">
+          <div>
+            <div class="t-txt">부양가족(본인 포함)</div>
+            <div class="t-sub">실수령 간이세액 추정에 반영돼요</div>
+          </div>
+          <select id="dependents" style="width:96px;flex:none">
+            <option value="1" selected>1명</option>
+            <option value="2">2명</option>
+            <option value="3">3명</option>
+            <option value="4">4명</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- 결과 -->
+    <div id="salaryResults">
+      <div class="card empty">아래 버튼을 누르면 내 연봉이 상위 몇 %인지 알려드려요.</div>
+    </div>
+
+    <!-- 참고 표 -->
+    <section class="card">
+      <div class="tbl-cap">📌 전체 근로소득 백분위 <span style="font-weight:600;color:var(--sub);font-size:11px">(국세청 2023 귀속)</span></div>
+      <table class="dtable" id="tblPercentile">
+        <thead><tr><th>구간</th><th>연봉(세전)</th></tr></thead>
+        <tbody>
+          <tr data-lo="21673"><td>상위 1%</td><td>2억 1,673만원</td></tr>
+          <tr data-lo="10057" data-hi="21673"><td>상위 10%</td><td>1억 57만원</td></tr>
+          <tr data-lo="7624" data-hi="10057"><td>상위 20%</td><td>7,624만원</td></tr>
+          <tr data-lo="4272" data-hi="7624"><td>중위(상위 50%)</td><td>4,272만원</td></tr>
+          <tr data-lo="2642" data-hi="4272"><td>하위 20%</td><td>2,642만원</td></tr>
+          <tr data-lo="0" data-hi="2642"><td>하위 10%</td><td>2,119만원</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-src">출처: 국세청 근로소득 백분위(2023 귀속) · <b>만근 근로자</b> 기준이라 단기·일용 근로자가 빠져 평균(5,482만)·중위(4,272만)가 다소 높게 잡힙니다.</div>
+
+      <div class="tbl-cap" style="margin-top:22px">📊 연령(5세)별 평균·중위소득 <span style="font-weight:600;color:var(--sub);font-size:11px">(통계청 2024)</span></div>
+      <table class="dtable" id="tblAge">
+        <thead><tr><th>연령</th><th>월 평균</th><th>월 중위</th></tr></thead>
+        <tbody>
+          <tr data-amin="0"  data-amax="19"><td>19세 이하</td><td>95만</td><td>62만</td></tr>
+          <tr data-amin="20" data-amax="24"><td>20~24세</td><td>200만</td><td>210만</td></tr>
+          <tr data-amin="25" data-amax="29"><td>25~29세</td><td>304만</td><td>284만</td></tr>
+          <tr data-amin="30" data-amax="34"><td>30~34세</td><td>368만</td><td>333만</td></tr>
+          <tr data-amin="35" data-amax="39"><td>35~39세</td><td>430만</td><td>372만</td></tr>
+          <tr data-amin="40" data-amax="44"><td>40~44세</td><td>464만</td><td>389만</td></tr>
+          <tr data-amin="45" data-amax="49"><td>45~49세</td><td>474만</td><td>368만</td></tr>
+          <tr data-amin="50" data-amax="54"><td>50~54세</td><td>464만</td><td>324만</td></tr>
+          <tr data-amin="55" data-amax="59"><td>55~59세</td><td>424만</td><td>287만</td></tr>
+          <tr data-amin="60" data-amax="64"><td>60~64세</td><td>319만</td><td>230만</td></tr>
+          <tr data-amin="65" data-amax="69"><td>65~69세</td><td>253만</td><td>200만</td></tr>
+          <tr data-amin="70" data-amax="200"><td>70세 이상</td><td>165만</td><td>90만</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-src">출처: 통계청 「2024년 임금근로일자리 소득(보수) 결과」(2026.2 발표) · 금액은 <b>월 기준</b>이며 5세 구간별 공식 수치입니다. 20~24세는 시간제 비중이 커서 중위가 평균보다 높아요.</div>
+
+      <div class="tbl-cap" style="margin-top:22px">🏠 2026년 기준 중위소득 <span style="font-weight:600;color:var(--sub);font-size:11px">(가구 월소득)</span></div>
+      <table class="dtable">
+        <thead><tr><th>가구원 수</th><th>월 소득</th></tr></thead>
+        <tbody>
+          <tr><td>1인</td><td>2,564,238원</td></tr>
+          <tr><td>2인</td><td>4,199,292원</td></tr>
+          <tr><td>3인</td><td>5,359,036원</td></tr>
+          <tr><td>4인</td><td>6,494,738원</td></tr>
+          <tr><td>5인</td><td>7,556,719원</td></tr>
+          <tr><td>6인</td><td>8,555,952원</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-src">출처: 보건복지부 고시 제2025-135호(2025.8) · 각종 복지·바우처 자격 판정의 기준선입니다.</div>
+    </section>
+
+    <footer>
+      <b>계산 가정 안내</b><br>
+      · <b>상위 %</b>는 국세청 근로소득 백분위(2023 귀속) 곡선을 보간해 추정합니다. 만근 근로자 기준이라 실제 전체 경제활동인구 대비 순위와는 차이가 있을 수 있어요.<br>
+      · <b>연령대 내 순위</b>는 공식 통계가 없어, 연령대별 평균(통계청)과 전체 분포를 결합한 <b>추정치</b>입니다. 참고용으로만 보세요.<br>
+      · <b>실수령액</b>은 4대보험 본인부담(국민연금 4.5%·건강보험 3.545%·장기요양 12.95%·고용보험 0.9%)과 근로소득 간이세액(누진세율 + 근로소득공제·세액공제)을 적용한 추정이며, 부양가족·각종 소득공제·비과세 항목에 따라 실제와 달라집니다.
+
+      <div class="disclaimer">
+        본 계산기는 일반적인 정보 제공을 위한 <b>참고용 추정 도구</b>입니다. 백분위·실수령액은 공개 통계와 일반적인 세법·요율을 단순 적용한 추정치로, 개인별 공제 항목·비과세 한도·세법 개정·요율 변경 등에 따라 <b>실제 값과 차이가 발생할 수 있습니다.</b> 정확한 세후 급여는 회사 급여명세서·국세청 홈택스를, 복지 자격은 복지로 등 <b>공식 출처를 직접 확인</b>하시기 바랍니다.
+      </div>
+    </footer>
+
+  </div><!-- /view-salary -->
 
 <div class="cta-bar"><button class="cta" id="calcBtn">실수령액 계산하기</button></div>
 
@@ -540,7 +719,10 @@ document.getElementById('bonusStart').addEventListener('change', e=>state.bonusS
 updateMedianLabel();
 
 /* ──────────────────────────── 계산 실행 ──────────────────────────── */
-document.getElementById('calcBtn').addEventListener('click', calculate);
+let activeTab = 'savings';
+document.getElementById('calcBtn').addEventListener('click', ()=>{
+  if (activeTab === 'salary') calcSalary(); else calculate();
+});
 
 function calculate(){
   const s = state;
@@ -666,6 +848,287 @@ function highlightBest(){
   flag.className = 'best-flag';
   flag.textContent = '★ 실수령액 기준 더 유리';
   best.querySelector('.big-amt').after(flag);
+}
+
+/* =====================================================================
+   탭(계산기) 전환
+   ===================================================================== */
+const TAB_META = {
+  savings: {
+    eyebrow:'2026 최신 정책 반영',
+    title:'적금 환승 비교',
+    desc:'청년도약계좌 유지와 미래적금 환승 중 어느 쪽이 유리한지 비교해 드려요.',
+    cta:'실수령액 계산하기'
+  },
+  salary:  {
+    eyebrow:'정책 기준 2026 · 소득 통계 2023~24년',
+    title:'내 연봉 상위 %',
+    desc:'내 나이·연봉이 전체와 또래 중 상위 몇 %인지, 실수령액은 얼마인지 알려드려요.',
+    cta:'상위 % · 실수령 계산하기'
+  }
+};
+function applyTabMeta(tab){
+  const m = TAB_META[tab];
+  document.getElementById('headerEyebrow').textContent = m.eyebrow;
+  document.getElementById('headerTitle').textContent   = m.title;
+  document.getElementById('headerDesc').textContent    = m.desc;
+  document.getElementById('calcBtn').textContent       = m.cta;
+}
+document.querySelectorAll('#tabs button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on', b===btn));
+    document.getElementById('view-savings').hidden = (activeTab !== 'savings');
+    document.getElementById('view-salary').hidden  = (activeTab !== 'salary');
+    applyTabMeta(activeTab);
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+applyTabMeta(activeTab); // 초기 진입 시 기본 탭(savings) 헤더 동기화
+
+/* =====================================================================
+   [연봉 상위 %] 계산 엔진
+   ===================================================================== */
+
+/* ── 연령대 판정 ── */
+function ageBand(age){
+  if (age < 30) return 20;
+  if (age < 40) return 30;
+  if (age < 50) return 40;
+  if (age < 60) return 50;
+  return 60;
+}
+const BAND_LABEL = {20:'20대',30:'30대',40:'40대',50:'50대',60:'60대+'};
+
+/* ── 연령 5세 구간별 월 소득 (통계청 2024, 만원/월) ── 평균·중위 공식값 ── */
+const AGE5 = [
+  {min:0, max:19, label:'19세 이하', avg:95,  med:62},
+  {min:20,max:24, label:'20~24세',  avg:200, med:210},
+  {min:25,max:29, label:'25~29세',  avg:304, med:284},
+  {min:30,max:34, label:'30~34세',  avg:368, med:333},
+  {min:35,max:39, label:'35~39세',  avg:430, med:372},
+  {min:40,max:44, label:'40~44세',  avg:464, med:389},
+  {min:45,max:49, label:'45~49세',  avg:474, med:368},
+  {min:50,max:54, label:'50~54세',  avg:464, med:324},
+  {min:55,max:59, label:'55~59세',  avg:424, med:287},
+  {min:60,max:64, label:'60~64세',  avg:319, med:230},
+  {min:65,max:69, label:'65~69세',  avg:253, med:200},
+  {min:70,max:200,label:'70세 이상', avg:165, med:90}
+];
+const band5 = age => AGE5.find(b => age>=b.min && age<=b.max) || AGE5[AGE5.length-1];
+
+/* ── 전체 근로소득 백분위 곡선 (국세청 2023 귀속, 연·만원) ──
+   (연봉, 상위 %) 앵커. 로그-로그 보간으로 부드러운 꼬리 표현 */
+const PCT_ANCHORS = [
+  // salaryMan, topPercent
+  [2119,  90], [2642, 80], [4272, 50], [7624, 20],
+  [10057, 10], [21673, 1], [113769, 0.1]
+];
+
+/* ── 연령대별 백분위 앵커 (추정) ──
+   상위10/25/50%는 andtoand 추정, 하위 구간은 전체 분포 비율로 합성 */
+const BAND_ANCHORS = {
+  //          [salaryMan, topPct]  (상위 %)
+  20: [[5500,10],[4200,25],[3400,50],[2100,80],[1690,90]],
+  30: [[8500,10],[6000,25],[4500,50],[2780,80],[2230,90]],
+  40: [[10000,10],[7500,25],[5500,50],[3400,80],[2730,90]],
+  50: [[10000,10],[6800,25],[5200,50],[3210,80],[2580,90]],
+  60: [[6500,10],[4500,25],[3300,50],[2040,80],[1640,90]]
+};
+
+/* 로그-로그 보간으로 상위 % 추정 (앵커는 salary 내림차순/오름차순 무관, 정렬 후 사용) */
+function topPercentFromSalary(salaryMan, anchors){
+  if (salaryMan <= 0) return 99.9;
+  const a = [...anchors].sort((x,y)=>x[0]-y[0]); // salary 오름차순
+  // 범위 밖 클램프
+  if (salaryMan <= a[0][0]) return Math.min(99.9, a[0][1] + (1 - salaryMan/a[0][0])*8);
+  if (salaryMan >= a[a.length-1][0]) return Math.max(0.05, a[a.length-1][1]);
+  for (let i=0;i<a.length-1;i++){
+    const [s0,p0]=a[i], [s1,p1]=a[i+1];
+    if (salaryMan>=s0 && salaryMan<=s1){
+      const t=(Math.log(salaryMan)-Math.log(s0))/(Math.log(s1)-Math.log(s0));
+      const lp=Math.log(p0)+t*(Math.log(p1)-Math.log(p0));
+      return Math.exp(lp);
+    }
+  }
+  return 50;
+}
+const fmtPct = p => p<1 ? p.toFixed(2) : p<10 ? p.toFixed(1) : Math.round(p).toString();
+
+/* ── 실수령액(연/월) 추정 ── 4대보험 + 근로소득 간이세액 ── */
+function netPay(grossMan, dependents, useNontax){
+  const gross = grossMan*10000;                 // 연 총급여(원)
+  const nontaxMonthly = useNontax ? 200000 : 0; // 비과세 식대 월 20만
+  const nontaxYear = nontaxMonthly*12;
+  const taxableGross = Math.max(0, gross - nontaxYear); // 과세 대상 급여
+
+  // 4대보험 본인부담 (월 보수월액 = 과세급여/12 기준, 국민연금 상한 적용)
+  const wageM = taxableGross/12;
+  const npBase = Math.min(wageM, 6170000);            // 국민연금 기준소득월액 상한
+  const np = npBase*0.045*12;                          // 국민연금 4.5%
+  const hi = wageM*0.03545*12;                         // 건강보험 3.545%
+  const ltc = hi*0.1295;                               // 장기요양 = 건보료×12.95%
+  const ei = wageM*0.009*12;                           // 고용보험 0.9%
+  const insurance = np+hi+ltc+ei;
+
+  // 근로소득세 (연)
+  const ded = earnedIncomeDeduction(taxableGross);    // 근로소득공제
+  const earnedIncome = Math.max(0, taxableGross - ded);
+  const personal = dependents*1500000;                 // 인적공제(1인당 150만)
+  const base = Math.max(0, earnedIncome - personal - np - hi - ltc - ei); // 과세표준(연금·보험료 공제)
+  const calcTax = progressiveTax(base);                // 산출세액
+  const credit = earnedTaxCredit(calcTax, taxableGross);// 근로소득세액공제
+  const incomeTax = Math.max(0, calcTax - credit);     // 결정세액
+  const localTax = incomeTax*0.10;                     // 지방소득세
+
+  const totalDeduct = insurance + incomeTax + localTax;
+  const netYear = gross - totalDeduct;
+  return {
+    netYear, netMonth: netYear/12,
+    insurance, incomeTax, localTax,
+    np, hi:hi+ltc, ei,
+    deductMonth: totalDeduct/12
+  };
+}
+function earnedIncomeDeduction(g){
+  let d;
+  if (g<=5000000) d=g*0.7;
+  else if (g<=15000000) d=3500000+(g-5000000)*0.4;
+  else if (g<=45000000) d=7500000+(g-15000000)*0.15;
+  else if (g<=100000000) d=12000000+(g-45000000)*0.05;
+  else d=14750000+(g-100000000)*0.02;
+  return Math.min(d, 20000000); // 공제한도 2천만
+}
+function progressiveTax(base){
+  if (base<=14000000) return base*0.06;
+  if (base<=50000000) return 840000+(base-14000000)*0.15;
+  if (base<=88000000) return 6240000+(base-50000000)*0.24;
+  if (base<=150000000) return 15360000+(base-88000000)*0.35;
+  if (base<=300000000) return 37060000+(base-150000000)*0.38;
+  if (base<=500000000) return 94060000+(base-300000000)*0.40;
+  if (base<=1000000000) return 174060000+(base-500000000)*0.42;
+  return 384060000+(base-1000000000)*0.45;
+}
+function earnedTaxCredit(calcTax, g){
+  let credit = calcTax<=1300000 ? calcTax*0.55 : 715000+(calcTax-1300000)*0.30;
+  let cap;
+  if (g<=33000000) cap=740000;
+  else if (g<=70000000) cap=Math.max(660000, 740000-(g-33000000)*0.008);
+  else if (g<=120000000) cap=Math.max(500000, 660000-(g-70000000)*0.5);
+  else cap=Math.max(200000, 500000-(g-120000000)*0.5);
+  return Math.min(credit, cap);
+}
+
+/* ── 연봉 계산기 입력 상태 + 바인딩 ── */
+const sal = { age:32, pay:4500, nontax:true, dependents:1 };
+const ageInput=document.getElementById('ageInput'), ageRange=document.getElementById('ageRange');
+function syncAge(v){
+  v=Math.max(19,Math.min(75,v|0)); sal.age=v;
+  ageInput.value=v; ageRange.value=Math.min(70,v);
+  document.getElementById('ageBandLabel').textContent=band5(v).label;
+}
+ageInput.addEventListener('input',e=>syncAge(+e.target.value||0));
+ageRange.addEventListener('input',e=>syncAge(+e.target.value));
+
+const payIncome=document.getElementById('payIncome'), payIncomeRange=document.getElementById('payIncomeRange');
+function syncPayIncome(v){
+  v=Math.max(0,v|0); sal.pay=v;
+  payIncome.value=v; payIncomeRange.value=Math.min(15000,v);
+  document.getElementById('payIncomeLabel').textContent=v.toLocaleString('ko-KR')+'만원';
+  document.getElementById('payMonthlyLabel').textContent=Math.round(v/12).toLocaleString('ko-KR')+'만원';
+}
+payIncome.addEventListener('input',e=>syncPayIncome(+e.target.value||0));
+payIncomeRange.addEventListener('input',e=>syncPayIncome(+e.target.value));
+
+const nontaxEl=document.getElementById('nontax');
+nontaxEl.addEventListener('change',()=>{ sal.nontax=nontaxEl.checked; document.getElementById('rowNontax').classList.toggle('on',nontaxEl.checked); });
+document.getElementById('rowNontax').classList.toggle('on', nontaxEl.checked);
+document.getElementById('dependents').addEventListener('change',e=>sal.dependents=+e.target.value);
+
+syncAge(32); syncPayIncome(4500);
+
+/* ── 계산 실행 ── */
+function calcSalary(){
+  const band = ageBand(sal.age);
+  const b5 = band5(sal.age);                          // 내 나이가 속한 5세 구간(통계청)
+  const overall = topPercentFromSalary(sal.pay, PCT_ANCHORS);
+  const inBand  = topPercentFromSalary(sal.pay, BAND_ANCHORS[band]);
+  const net = netPay(sal.pay, sal.dependents, sal.nontax);
+
+  // 내 나이대 평균/중위 (월 만원 → 연 환산 만원)
+  const avgYear = b5.avg*12;
+  const medYear = b5.med*12;
+  const diff = sal.pay - avgYear;                     // 또래 평균 대비(연, 만원)
+  const diffPct = avgYear ? (diff/avgYear*100) : 0;
+  const vsAvg = diff>=0 ? 'up':'down';
+
+  // 게이지 위치(상위 0%=오른쪽 끝, 100%=왼쪽 끝)
+  const pinPct = Math.max(2, Math.min(98, 100 - overall));
+
+  let html = '<div class="result-head">내 연봉 분석</div>';
+
+  html += `
+  <div class="rcard best">
+    <span class="tag blue">전체 근로자 기준</span>
+    <div class="pct-hero">
+      <div class="pct-top">내 연봉 ${sal.pay.toLocaleString('ko-KR')}만원은 전체에서</div>
+      <div class="pct-big">상위 <small></small>${fmtPct(overall)}<small>%</small></div>
+      <div class="pct-sub">국세청 2023 귀속 근로소득 백분위 기준</div>
+    </div>
+    <div class="gauge"><div class="pin" style="left:${pinPct}%"></div></div>
+    <div class="gauge-scale"><span>하위</span><span>중위 50%</span><span>상위 1%</span></div>
+
+    <div class="effect-box">
+      <div class="eff-top">내 나이 ${sal.age}세 (${b5.label}) 평균소득</div>
+      <div class="eff-num">월 ${b5.avg.toLocaleString('ko-KR')}만원 · 연 약 ${avgYear.toLocaleString('ko-KR')}만원</div>
+      <div class="eff-sub">중위 월 ${b5.med}만원(연 약 ${medYear.toLocaleString('ko-KR')}만) · 통계청 2024년 기준</div>
+    </div>
+
+    <div class="chips-row">
+      <div class="stat-chip ${vsAvg}">
+        <div class="sc-k">${b5.label} 평균 대비</div>
+        <div class="sc-v">${diff>=0?'+':''}${diff.toLocaleString('ko-KR')}만 (${diff>=0?'+':''}${diffPct.toFixed(0)}%)</div>
+      </div>
+      <div class="stat-chip">
+        <div class="sc-k">${BAND_LABEL[band]} 내 추정 순위</div>
+        <div class="sc-v">상위 ${fmtPct(inBand)}%</div>
+      </div>
+    </div>
+  </div>`;
+
+  // 실수령
+  html += `
+  <div class="rcard">
+    <span class="tag green">세후 실수령</span>
+    <h3>월 실수령액 (추정)</h3>
+    <div class="sub">세전 ${sal.pay.toLocaleString('ko-KR')}만원 · 부양가족 ${sal.dependents}명${sal.nontax?' · 식대 비과세':''}</div>
+    <div class="big-amt">${won(net.netMonth)}<small>/월</small></div>
+    <div class="breakdown">
+      <div class="brow"><span class="k">연 실수령액</span><span class="v">${won(net.netYear)}</span></div>
+      <div class="brow"><span class="k">국민연금</span><span class="v">-${won(net.np/12)}/월</span></div>
+      <div class="brow"><span class="k">건강+장기요양</span><span class="v">-${won(net.hi/12)}/월</span></div>
+      <div class="brow"><span class="k">고용보험</span><span class="v">-${won(net.ei/12)}/월</span></div>
+      <div class="brow"><span class="k">소득세+지방세</span><span class="v">-${won((net.incomeTax+net.localTax)/12)}/월</span></div>
+      <div class="brow"><span class="k" style="font-weight:800">월 공제 합계</span><span class="v" style="font-weight:800">-${won(net.deductMonth)}</span></div>
+    </div>
+  </div>`;
+
+  html += `<div class="result-note">상위 %·연령대 순위는 공개 통계 보간 추정치이고, 실수령액은 일반 요율·간이세액 기준 추정이에요. 개인 공제에 따라 실제와 다를 수 있어요.</div>`;
+
+  document.getElementById('salaryResults').innerHTML = html;
+
+  // 표에서 내 위치 하이라이트
+  document.querySelectorAll('#tblPercentile tr').forEach(tr=>{
+    tr.classList.remove('hl');
+    const lo=+tr.dataset.lo, hi=tr.dataset.hi?+tr.dataset.hi:Infinity;
+    if (tr.dataset.lo!==undefined && sal.pay>=lo && sal.pay<hi) tr.classList.add('hl');
+  });
+  document.querySelectorAll('#tblAge tbody tr').forEach(tr=>{
+    const lo=+tr.dataset.amin, hi=+tr.dataset.amax;
+    tr.classList.toggle('hl', sal.age>=lo && sal.age<=hi);
+  });
+
+  document.getElementById('salaryResults').scrollIntoView({behavior:'smooth', block:'start'});
 }
 </script>
 </body>
