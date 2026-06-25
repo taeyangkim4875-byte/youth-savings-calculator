@@ -1182,12 +1182,15 @@ function earnedTaxCredit(calcTax, g){
 /* ── 연봉 계산기 입력 상태 + 바인딩 ── */
 const sal = { age:32, pay:4500, nontax:true, dependents:1 };
 const ageInput=document.getElementById('ageInput'), ageRange=document.getElementById('ageRange');
-function syncAge(v){
+function syncAge(v, fromInput){
+  if(fromInput && (v==='' || isNaN(v))) return;
   v=Math.max(19,Math.min(75,v|0)); sal.age=v;
-  ageInput.value=v; ageRange.value=Math.min(70,v);
+  if(!fromInput) ageInput.value=v;
+  ageRange.value=Math.min(70,v);
   document.getElementById('ageBandLabel').textContent=band5(v).label;
 }
-ageInput.addEventListener('input',e=>syncAge(+e.target.value||0));
+ageInput.addEventListener('input',e=>syncAge(+e.target.value, true));
+ageInput.addEventListener('blur',e=>{ syncAge(+e.target.value||32); ageInput.value=sal.age; });
 ageRange.addEventListener('input',e=>syncAge(+e.target.value));
 
 const payIncome=document.getElementById('payIncome'), payIncomeRange=document.getElementById('payIncomeRange');
