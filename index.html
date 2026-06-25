@@ -13,7 +13,16 @@
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828"
      crossorigin="anonymous"></script>
-<title>모든 계산기</title>
+<title>모든 계산기 - 청년도약계좌, 연봉 실수령액, 실업급여, 국민연금 계산기</title>
+<meta name="description" content="청년도약계좌 환승 비교, 연봉 상위 % 및 실수령액, 실업급여, 국민연금까지. 2026년 최신 정책 반영 무료 계산기." />
+<meta name="keywords" content="청년도약계좌 계산기, 연봉 실수령액 계산기, 연봉 상위 퍼센트, 실업급여 계산기, 국민연금 계산기, 적금 비교, 세후 월급" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="모든 계산기 - 연봉, 적금, 실업급여, 국민연금" />
+<meta property="og:description" content="2026년 최신 정책 반영. 청년도약계좌 환승 비교, 연봉 상위 %, 실수령액 등 무료 계산기." />
+<meta property="og:url" content="https://moduncalc.com" />
+<meta property="og:locale" content="ko_KR" />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href="https://moduncalc.com" />
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
 <style>
@@ -245,6 +254,8 @@
   <nav class="tabs" id="tabs">
     <button data-tab="savings" class="on">💸 적금 환승 비교</button>
     <button data-tab="salary">📊 내 연봉 상위 %</button>
+    <button data-tab="jobless">🧾 실업급여</button>
+    <button data-tab="pension">👵 노후 국민연금</button>
   </nav>
 
   <!-- ===================== [뷰 1] 적금 환승 비교 ===================== -->
@@ -507,6 +518,137 @@
 
   </div><!-- /view-salary -->
 
+  <!-- ===================== [뷰 3] 실업급여(구직급여) ===================== -->
+  <div class="view" id="view-jobless" hidden>
+
+    <section class="card">
+      <h2 class="sec-title"><span class="num">1</span>퇴사·고용보험 정보</h2>
+
+      <div class="field">
+        <label class="lbl">퇴사 당시 나이 <span class="hint">만 나이 · 50세 기준 지급일수 달라져요</span></label>
+        <div class="amt-row">
+          <input type="number" id="jbAge" value="35" min="15" max="64" step="1" inputmode="numeric" />
+          <span class="unit">세</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl">퇴사 전 월 평균임금 <span class="hint">세전 · 최근 3개월 평균 · 만원 단위</span></label>
+        <div class="amt-row">
+          <input type="number" id="jbWage" value="300" min="0" step="10" inputmode="numeric" />
+          <span class="unit">만원/월</span>
+        </div>
+        <input type="range" id="jbWageRange" min="0" max="1000" step="10" value="300" />
+        <div class="range-val">월 <b id="jbWageLabel">300만원</b> · 상여·수당 포함 세전 평균</div>
+      </div>
+
+      <div class="field">
+        <label class="lbl">고용보험 가입기간 <span class="hint">총 피보험 단위기간</span></label>
+        <select id="jbYears">
+          <option value="0.5">1년 미만</option>
+          <option value="2" selected>1년 이상 ~ 3년 미만</option>
+          <option value="4">3년 이상 ~ 5년 미만</option>
+          <option value="7">5년 이상 ~ 10년 미만</option>
+          <option value="12">10년 이상</option>
+        </select>
+        <div class="note">이직일 이전 18개월 중 피보험 단위기간이 <b>180일 이상</b>이어야 수급 자격이 생겨요. 자발적 퇴사·중대 귀책 해고는 원칙적으로 제외됩니다.</div>
+      </div>
+    </section>
+
+    <div id="joblessResults">
+      <div class="card empty">버튼을 누르면 예상 구직급여 일액·지급일수·총액을 알려드려요.</div>
+    </div>
+
+    <section class="card">
+      <div class="tbl-cap">📋 소정급여일수 <span style="font-weight:600;color:var(--sub);font-size:11px">(고용보험법 별표1)</span></div>
+      <table class="dtable" id="tblJobless">
+        <thead><tr><th>가입기간</th><th>50세 미만</th><th>50세↑·장애</th></tr></thead>
+        <tbody>
+          <tr data-ylo="0" data-yhi="1"><td>1년 미만</td><td>120일</td><td>120일</td></tr>
+          <tr data-ylo="1" data-yhi="3"><td>1~3년</td><td>150일</td><td>180일</td></tr>
+          <tr data-ylo="3" data-yhi="5"><td>3~5년</td><td>180일</td><td>210일</td></tr>
+          <tr data-ylo="5" data-yhi="10"><td>5~10년</td><td>210일</td><td>240일</td></tr>
+          <tr data-ylo="10" data-yhi="99"><td>10년 이상</td><td>240일</td><td>270일</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-src">2026년 1월 1일 이후 이직자 기준 · 1일 상한 <b>68,100원</b>(7년 만 인상) · 하한 <b>66,048원</b>(최저임금 10,320원×80%×8h) · 일액 = 평균임금의 60%.</div>
+    </section>
+
+    <footer>
+      <b>계산 가정 안내</b><br>
+      · 구직급여 1일액 = <b>퇴사 전 평균임금 × 60%</b>이며, 상한 68,100원·하한 66,048원으로 조정됩니다.<br>
+      · 평균임금은 월 임금을 1일 단위로 환산(÷30.4)해 추정하며, 실제 평균임금은 최근 3개월 임금총액÷총일수로 산정됩니다.<br>
+      · 7일 대기기간 이후 지급되며, 총 예상액 = 1일액 × 소정급여일수입니다.
+      <div class="disclaimer">
+        본 계산기는 <b>참고용 추정 도구</b>입니다. 실제 수급액·자격·일수는 이직 사유, 평균임금 산정, 근로복지공단 심사에 따라 달라집니다. 정확한 내용은 <b>고용24(work24.go.kr)·근로복지공단</b>에서 확인하세요.
+      </div>
+    </footer>
+
+  </div><!-- /view-jobless -->
+
+  <!-- ===================== [뷰 4] 노후 국민연금 시뮬레이터 ===================== -->
+  <div class="view" id="view-pension" hidden>
+
+    <section class="card">
+      <h2 class="sec-title"><span class="num">1</span>가입 정보</h2>
+
+      <div class="field">
+        <label class="lbl">현재 나이 <span class="hint">만 나이</span></label>
+        <div class="amt-row">
+          <input type="number" id="pnAge" value="35" min="18" max="64" step="1" inputmode="numeric" />
+          <span class="unit">세</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl">월 평균소득 <span class="hint">세전 · 가입기간 평균 기준소득월액 · 만원</span></label>
+        <div class="amt-row">
+          <input type="number" id="pnIncome" value="300" min="0" step="10" inputmode="numeric" />
+          <span class="unit">만원/월</span>
+        </div>
+        <input type="range" id="pnIncomeRange" min="0" max="700" step="10" value="300" />
+        <div class="range-val">월 <b id="pnIncomeLabel">300만원</b> · 기준소득월액 상한 637만원까지 인정</div>
+      </div>
+
+      <div class="field">
+        <label class="lbl">총 가입(예정) 기간 <span class="hint">납입 완료 시점 기준 총 가입연수</span></label>
+        <input type="range" id="pnYears" min="1" max="45" step="1" value="30" />
+        <div class="range-val">총 <b id="pnYearsLabel">30년</b> 가입 · 10년 이상이어야 노령연금 수급</div>
+      </div>
+    </section>
+
+    <div id="pensionResults">
+      <div class="card empty">버튼을 누르면 예상 월 수령액과 수급 개시 연령을 알려드려요.</div>
+    </div>
+
+    <section class="card">
+      <div class="tbl-cap">🎂 노령연금 수급 개시 연령 <span style="font-weight:600;color:var(--sub);font-size:11px">(출생연도별)</span></div>
+      <table class="dtable" id="tblPension">
+        <thead><tr><th>출생연도</th><th>개시 연령</th></tr></thead>
+        <tbody>
+          <tr data-blo="0"    data-bhi="1952"><td>~1952년</td><td>60세</td></tr>
+          <tr data-blo="1953" data-bhi="1956"><td>1953~1956</td><td>61세</td></tr>
+          <tr data-blo="1957" data-bhi="1960"><td>1957~1960</td><td>62세</td></tr>
+          <tr data-blo="1961" data-bhi="1964"><td>1961~1964</td><td>63세</td></tr>
+          <tr data-blo="1965" data-bhi="1968"><td>1965~1968</td><td>64세</td></tr>
+          <tr data-blo="1969" data-bhi="9999"><td>1969년~</td><td>65세</td></tr>
+        </tbody>
+      </table>
+      <div class="tbl-src">2026년 적용: 소득대체율 <b>43%</b>(비례상수 1.29) · A값(전체 가입자 평균) <b>319만원</b> · 보험료율 9.5%(2033년 13%로 단계 인상). 2025년 연금개혁 반영.</div>
+    </section>
+
+    <footer>
+      <b>계산 가정 안내</b><br>
+      · 예상 연금 = 비례상수 1.29 × (A값 + 본인 평균소득) × (1 + 5%×20년 초과기간) ÷ 12로 추정합니다(2026년 신규 가입 소득대체율 43% 기준).<br>
+      · 실제 연금은 <b>연도별 비례상수·소득 재평가·물가 반영</b>으로 산정되므로, 과거 가입분이 있으면 본 추정이 다소 높게 나올 수 있어요.<br>
+      · 가입기간 10년 미만이면 노령연금(매월 수령) 대상이 아니며 반환일시금으로 처리됩니다.
+      <div class="disclaimer">
+        본 계산기는 <b>참고용 추정 도구</b>입니다. 실제 수령액은 가입 이력·소득 변동·제도 개정에 따라 달라집니다. 정확한 예상연금액은 <b>국민연금공단(nps.or.kr) '내 연금 알아보기'</b>에서 본인 가입내역으로 확인하세요.
+      </div>
+    </footer>
+
+  </div><!-- /view-pension -->
+
 <div class="cta-bar"><button class="cta" id="calcBtn">실수령액 계산하기</button></div>
 
 <script>
@@ -723,7 +865,10 @@ updateMedianLabel();
 /* ──────────────────────────── 계산 실행 ──────────────────────────── */
 let activeTab = 'savings';
 document.getElementById('calcBtn').addEventListener('click', ()=>{
-  if (activeTab === 'salary') calcSalary(); else calculate();
+  if (activeTab === 'salary') calcSalary();
+  else if (activeTab === 'jobless') calcJobless();
+  else if (activeTab === 'pension') calcPension();
+  else calculate();
 });
 
 function calculate(){
@@ -867,6 +1012,18 @@ const TAB_META = {
     title:'내 연봉 상위 %',
     desc:'내 나이·연봉이 전체와 또래 중 상위 몇 %인지, 실수령액은 얼마인지 알려드려요.',
     cta:'상위 % · 실수령 계산하기'
+  },
+  jobless: {
+    eyebrow:'2026 고용보험 기준',
+    title:'실업급여 계산기',
+    desc:'퇴사 후 받을 구직급여 1일액과 총 지급액을 미리 계산해 드려요.',
+    cta:'구직급여 계산하기'
+  },
+  pension: {
+    eyebrow:'2026 국민연금 개혁 반영',
+    title:'노후 국민연금',
+    desc:'지금 소득·가입기간으로 노후에 매월 받을 예상 연금액을 알려드려요.',
+    cta:'예상 연금 계산하기'
   }
 };
 function applyTabMeta(tab){
@@ -880,8 +1037,7 @@ document.querySelectorAll('#tabs button').forEach(btn=>{
   btn.addEventListener('click',()=>{
     activeTab = btn.dataset.tab;
     document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on', b===btn));
-    document.getElementById('view-savings').hidden = (activeTab !== 'savings');
-    document.getElementById('view-salary').hidden  = (activeTab !== 'salary');
+    document.querySelectorAll('.view').forEach(v=>{ v.hidden = (v.id !== 'view-'+activeTab); });
     applyTabMeta(activeTab);
     window.scrollTo({top:0, behavior:'smooth'});
   });
@@ -1131,6 +1287,166 @@ function calcSalary(){
   });
 
   document.getElementById('salaryResults').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* =====================================================================
+   [실업급여] 구직급여 계산 엔진 (2026년 기준)
+   ===================================================================== */
+const JB_RATE     = 0.60;     // 평균임금 대비 구직급여 산정률
+const JB_UPPER    = 68100;    // 1일 상한액(2026)
+const JB_LOWER    = 66048;    // 1일 하한액(2026) = 최저임금 10,320×80%×8h
+const JB_WAIT     = 7;        // 대기기간(일)
+
+/* 소정급여일수: 가입연수 + 50세 기준 */
+function joblessDays(years, age){
+  const old = age >= 50; // 50세 이상(장애인 포함은 별도)
+  if (years < 1)  return 120;
+  if (years < 3)  return old ? 180 : 150;
+  if (years < 5)  return old ? 210 : 180;
+  if (years < 10) return old ? 240 : 210;
+  return old ? 270 : 240;
+}
+
+const jb = { age:35, wage:300, years:2 };
+const jbAge=document.getElementById('jbAge');
+jbAge.addEventListener('input',e=>jb.age=Math.max(15,Math.min(64,+e.target.value||0)));
+const jbWage=document.getElementById('jbWage'), jbWageRange=document.getElementById('jbWageRange');
+function syncJbWage(v){
+  v=Math.max(0,v|0); jb.wage=v;
+  jbWage.value=v; jbWageRange.value=Math.min(1000,v);
+  document.getElementById('jbWageLabel').textContent=v.toLocaleString('ko-KR')+'만원';
+}
+jbWage.addEventListener('input',e=>syncJbWage(+e.target.value||0));
+jbWageRange.addEventListener('input',e=>syncJbWage(+e.target.value));
+document.getElementById('jbYears').addEventListener('change',e=>jb.years=+e.target.value);
+
+function calcJobless(){
+  const wageMonthly = jb.wage*10000;
+  const dailyAvg = wageMonthly/30.4;                       // 1일 평균임금(근사)
+  const raw = dailyAvg*JB_RATE;                            // 평균임금의 60%
+  const daily = Math.round(Math.min(Math.max(raw, JB_LOWER), JB_UPPER)); // 상·하한 클램프
+  const days = joblessDays(jb.years, jb.age);
+  const total = daily*days;
+  const monthsApprox = (days/30);
+
+  let cap='';
+  if (raw > JB_UPPER) cap = '<span class="chip violet">상한 적용</span>';
+  else if (raw < JB_LOWER) cap = '<span class="chip green">하한 적용</span>';
+
+  let html = '<div class="result-head">예상 구직급여</div>';
+  html += `
+  <div class="rcard best">
+    <span class="tag blue">${jb.age>=50?'50세 이상':'50세 미만'} · 가입 ${jb.years<1?'1년 미만':jb.years+'년'}</span>
+    <div class="pct-hero">
+      <div class="pct-top">예상 총 수령액</div>
+      <div class="pct-big">${won(total)}</div>
+      <div class="pct-sub">1일 ${won(daily)} × ${days}일 (약 ${monthsApprox.toFixed(1)}개월)</div>
+    </div>
+    <div class="breakdown">
+      <div class="brow"><span class="k">1일 구직급여 ${cap}</span><span class="v">${won(daily)}</span></div>
+      <div class="brow"><span class="k">소정급여일수</span><span class="v">${days}일</span></div>
+      <div class="brow"><span class="k">평균임금(추정 일액)</span><span class="v">${won(dailyAvg)}/일</span></div>
+      <div class="brow"><span class="k">대기기간</span><span class="v">${JB_WAIT}일(미지급)</span></div>
+      <div class="brow"><span class="k" style="font-weight:800">총 예상액</span><span class="v" style="font-weight:800">${won(total)}</span></div>
+    </div>
+    <div class="effect-box">
+      <div class="eff-top">월 환산 시</div>
+      <div class="eff-num">약 ${won(daily*30)}/월</div>
+      <div class="eff-sub">1일액 × 30일 기준 · 실제는 30·31일 등 달력일수로 지급</div>
+    </div>
+  </div>`;
+  html += `<div class="result-note">상·하한과 60% 산정률을 적용한 추정이에요. 자발적 퇴사·피보험기간 미달 시 수급이 제한될 수 있어요.</div>`;
+
+  document.getElementById('joblessResults').innerHTML = html;
+  document.querySelectorAll('#tblJobless tbody tr').forEach(tr=>{
+    const lo=+tr.dataset.ylo, hi=+tr.dataset.yhi;
+    tr.classList.toggle('hl', jb.years>=lo && jb.years<hi);
+  });
+  document.getElementById('joblessResults').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+/* =====================================================================
+   [국민연금] 노령연금 예상 수령액 (2026년 기준)
+   ===================================================================== */
+const NPS_CONST   = 1.29;       // 2026 비례상수(소득대체율 43%)
+const NPS_A       = 3193511;    // 2026 A값(전체 가입자 평균소득월액)
+const NPS_CAP     = 6370000;    // 기준소득월액 상한(현행)
+const NPS_FLOOR   = 400000;     // 기준소득월액 하한
+
+/* 출생연도 → 노령연금 개시 연령 */
+function pensionAge(birthYear){
+  if (birthYear <= 1952) return 60;
+  if (birthYear <= 1956) return 61;
+  if (birthYear <= 1960) return 62;
+  if (birthYear <= 1964) return 63;
+  if (birthYear <= 1968) return 64;
+  return 65;
+}
+
+const pn = { age:35, income:300, years:30 };
+const pnAge=document.getElementById('pnAge');
+pnAge.addEventListener('input',e=>pn.age=Math.max(18,Math.min(64,+e.target.value||0)));
+const pnIncome=document.getElementById('pnIncome'), pnIncomeRange=document.getElementById('pnIncomeRange');
+function syncPnIncome(v){
+  v=Math.max(0,v|0); pn.income=v;
+  pnIncome.value=v; pnIncomeRange.value=Math.min(700,v);
+  document.getElementById('pnIncomeLabel').textContent=v.toLocaleString('ko-KR')+'만원';
+}
+pnIncome.addEventListener('input',e=>syncPnIncome(+e.target.value||0));
+pnIncomeRange.addEventListener('input',e=>syncPnIncome(+e.target.value));
+const pnYears=document.getElementById('pnYears');
+pnYears.addEventListener('input',e=>{ pn.years=+e.target.value; document.getElementById('pnYearsLabel').textContent=pn.years+'년'; });
+
+function calcPension(){
+  const B = Math.min(Math.max(pn.income*10000, NPS_FLOOR), NPS_CAP); // 본인 기준소득월액(상·하한)
+  const n = Math.max(0, (pn.years-20))*12;                            // 20년 초과 개월수
+  const basicYear = NPS_CONST * (NPS_A + B) * (1 + 0.05*n/12);        // 기본연금액(연)
+  const monthly = basicYear/12;
+  const replaceRate = pn.income>0 ? (monthly/(pn.income*10000)*100) : 0; // 내 소득 대비 연금
+  const birthYear = 2026 - pn.age;
+  const startAge = pensionAge(birthYear);
+
+  let html = '<div class="result-head">예상 노령연금</div>';
+
+  if (pn.years < 10){
+    html += `<div class="warn">가입기간이 10년 미만이면 매월 받는 노령연금 대상이 아니에요. 최소 <b>10년(120개월)</b> 이상 납입해야 연금으로 받을 수 있습니다.</div>`;
+    document.getElementById('pensionResults').innerHTML = html;
+    document.getElementById('pensionResults').scrollIntoView({behavior:'smooth', block:'start'});
+    highlightPensionTable(birthYear);
+    return;
+  }
+
+  html += `
+  <div class="rcard best">
+    <span class="tag blue">${startAge}세부터 평생 수령</span>
+    <div class="pct-hero">
+      <div class="pct-top">예상 월 연금액 (현재가치)</div>
+      <div class="pct-big">${won(monthly)}<small>/월</small></div>
+      <div class="pct-sub">총 ${pn.years}년 가입 · 2026년 소득대체율 43% 기준</div>
+    </div>
+    <div class="breakdown">
+      <div class="brow"><span class="k">연 환산 수령액</span><span class="v">${won(basicYear)}</span></div>
+      <div class="brow"><span class="k">내 소득 대비 (소득대체율)</span><span class="v">${replaceRate.toFixed(0)}%</span></div>
+      <div class="brow"><span class="k">20년 초과 가산</span><span class="v">${pn.years>20?('+'+((pn.years-20)*5)+'%'):'없음'}</span></div>
+      <div class="brow"><span class="k">수급 개시 연령</span><span class="v">${startAge}세 (${birthYear}년생)</span></div>
+    </div>
+    <div class="effect-box">
+      <div class="eff-top">${startAge}세부터 20년 수령 가정 시</div>
+      <div class="eff-num">총 약 ${won(basicYear*20)}</div>
+      <div class="eff-sub">물가상승률 미반영 현재가치 · 실제는 매년 물가 연동 인상</div>
+    </div>
+  </div>`;
+  html += `<div class="result-note">2026년 신규 가입 기준 단순 추정이에요. 과거 가입분·소득 변동·물가 반영에 따라 실제 연금과 달라질 수 있어요.</div>`;
+
+  document.getElementById('pensionResults').innerHTML = html;
+  highlightPensionTable(birthYear);
+  document.getElementById('pensionResults').scrollIntoView({behavior:'smooth', block:'start'});
+}
+function highlightPensionTable(birthYear){
+  document.querySelectorAll('#tblPension tbody tr').forEach(tr=>{
+    const lo=+tr.dataset.blo, hi=+tr.dataset.bhi;
+    tr.classList.toggle('hl', birthYear>=lo && birthYear<=hi);
+  });
 }
 </script>
 </body>
