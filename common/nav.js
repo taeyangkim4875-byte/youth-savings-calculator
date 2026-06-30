@@ -65,7 +65,7 @@
   const sidebar = document.createElement('aside');
   sidebar.className = 'sidebar';
   sidebar.id = 'sidebar';
-  sidebar.innerHTML = `<div class="sb-header"><span class="sb-logo">모든 계산기</span><button class="sb-close" id="sbClose">&times;</button></div><nav class="sb-nav">${navHtml}</nav>`;
+  sidebar.innerHTML = `<div class="sb-header"><span class="sb-logo">모든 계산기</span><button class="sb-close" id="sbClose">&times;</button></div><nav class="sb-nav">${navHtml}</nav><div class="sb-footer"><a href="/about/">소개</a><a href="/privacy/">개인정보처리방침</a></div>`;
 
   const overlay = document.createElement('div');
   overlay.className = 'sb-overlay';
