@@ -1,261 +1,535 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>퍼센트 계산기 · D-day 계산기 | 모든 계산기</title>
-  <link rel="canonical" href="https://moduncalc.com/daily/">
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-NX4JK10SS6');
-  </script>
-  <!-- AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
-  <!-- Pretendard Font -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
-  <link rel="stylesheet" href="/common/style.css">
-  <style>
-    .card{background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.07);padding:24px;margin-bottom:18px}
-    .card h3{font-size:1.08rem;font-weight:700;margin:0 0 16px;color:#1a1a1a}
-    .field{margin-bottom:14px}
-    .field label{display:block;font-size:.88rem;font-weight:600;color:#555;margin-bottom:6px}
-    .field input{width:100%;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:1rem;font-family:inherit;box-sizing:border-box;transition:border-color .2s}
-    .field input:focus{outline:none;border-color:#4a6cf7}
-    .pct-hero{text-align:center;padding:16px 0 4px}
-    .pct-hero .pct-big{font-size:2.2rem;font-weight:800;color:#4a6cf7;line-height:1.2}
-    .pct-hero .pct-sub{font-size:.92rem;color:#777;margin-top:4px}
-    .cta-btn{width:100%;padding:15px;border:none;border-radius:12px;background:#4a6cf7;color:#fff;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:8px;transition:background .2s}
-    .cta-btn:hover{background:#3b5de7}
-    .cta-btn:active{background:#2f4ed6}
-    .dday-results{margin-top:18px}
-    .dday-results .pct-hero{background:#f6f8ff;border-radius:12px;padding:24px 16px}
-    .dday-detail{font-size:.93rem;color:#555;margin-top:10px;text-align:center;line-height:1.7}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>일상 계산기 - 퍼센트, D-day, 단위변환, 할인, 더치페이 | 모든 계산기</title>
+<meta name="description" content="퍼센트, D-day, 단위변환, 할인가, 더치페이, 나이, 연비, 속도 계산기. 일상에서 자주 쓰는 계산을 한 곳에서." />
+<link rel="canonical" href="https://moduncalc.com/daily/">
+<meta property="og:type" content="website" />
+<meta property="og:title" content="일상 계산기 - 퍼센트, D-day, 단위변환 | 모든 계산기" />
+<meta property="og:description" content="일상에서 자주 쓰는 계산을 한 곳에서. 무료 계산기 모음." />
+<meta property="og:url" content="https://moduncalc.com/daily/" />
+<meta name="robots" content="index, follow" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+<style>
+  .tab-scroll{display:flex;gap:7px;padding:2px 4px 14px;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none}
+  .tab-scroll::-webkit-scrollbar{display:none}
+  .tab-scroll button{flex:0 0 auto;padding:9px 14px;border:1.5px solid var(--line);background:#fff;border-radius:12px;
+    font-size:13px;font-weight:700;color:var(--sub);cursor:pointer;transition:all .18s;font-family:inherit;white-space:nowrap}
+  .tab-scroll button:hover{border-color:#C9D0D6}
+  .tab-scroll button.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .live-result{background:var(--primary-weak);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+  .live-result .lr-big{font-size:28px;font-weight:800;color:var(--primary-dark);letter-spacing:-.5px}
+  .live-result .lr-sub{font-size:12px;color:var(--sub);margin-top:4px}
+  .unit-row{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+  .unit-row input{flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:16px;font-weight:700;
+    color:var(--ink);font-family:inherit;outline:none;background:#fff}
+  .unit-row input:focus{border-color:var(--primary)}
+  .unit-row .u-label{font-size:13px;font-weight:700;color:var(--sub);width:36px;text-align:center;flex:none}
+  .swap-btn{display:block;margin:0 auto 12px;padding:8px 16px;border:1.5px solid var(--line);background:#fff;border-radius:10px;
+    font-size:14px;cursor:pointer;font-family:inherit;color:var(--sub);font-weight:700}
+  .swap-btn:hover{border-color:var(--primary);color:var(--primary)}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid-2 .live-result{margin-top:0}
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <p id="headerEyebrow" class="eyebrow">간편 계산</p>
-      <h1 id="headerTitle">퍼센트 계산기</h1>
-      <p id="headerDesc">비율, 변화율, 할인율을 빠르게 계산해요.</p>
-    </header>
 
-    <nav class="tabs cols-2">
-      <button class="on" data-view="percent"><span class="t-ico">📊</span><span class="t-lbl">퍼센트</span></button>
-      <button data-view="dday"><span class="t-ico">📅</span><span class="t-lbl">D-day</span></button>
-    </nav>
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="headerEyebrow">간편 계산</div>
+    <h1 id="headerTitle">퍼센트 계산기</h1>
+    <p id="headerDesc">비율, 변화율, 할인율을 빠르게 계산해요.</p>
+  </header>
 
-    <!-- Percent View -->
-    <section id="view-percent">
-      <div class="card">
-        <h3>A의 B%는 얼마?</h3>
-        <div class="field">
-          <label for="pctA">A</label>
-          <input type="number" id="pctA" value="10000" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="pctB">B (%)</label>
-          <input type="number" id="pctB" value="10" inputmode="decimal">
-        </div>
-        <div id="pctResult1" class="pct-hero">
-          <div class="pct-big">1,000</div>
-          <div class="pct-sub">10,000의 10%</div>
-        </div>
+  <nav class="tab-scroll" id="tabs">
+    <button data-tab="percent" class="on">📊 퍼센트</button>
+    <button data-tab="discount">🏷️ 할인가</button>
+    <button data-tab="dutch">🍽️ 더치페이</button>
+    <button data-tab="dday">📅 D-day</button>
+    <button data-tab="age">🎂 나이</button>
+    <button data-tab="unit">📏 단위변환</button>
+    <button data-tab="speed">🚗 속도·시간</button>
+    <button data-tab="fuel">⛽ 연비</button>
+  </nav>
+
+  <!-- ==================== 퍼센트 ==================== -->
+  <div class="view" id="view-percent">
+    <section class="card">
+      <h2 class="sec-title"><span class="num">1</span>A의 B%는?</h2>
+      <div class="field">
+        <label class="lbl">값 A</label>
+        <div class="amt-row"><input type="number" id="pctA" value="10000" inputmode="decimal"><span class="unit"></span></div>
       </div>
-
-      <div class="card">
-        <h3>A에서 B로 변화하면 몇 %?</h3>
-        <div class="field">
-          <label for="pctFrom">이전 값</label>
-          <input type="number" id="pctFrom" value="100" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="pctTo">이후 값</label>
-          <input type="number" id="pctTo" value="130" inputmode="decimal">
-        </div>
-        <div id="pctResult2" class="pct-hero">
-          <div class="pct-big">+30%</div>
-          <div class="pct-sub">30 증가</div>
-        </div>
+      <div class="field">
+        <label class="lbl">비율 B</label>
+        <div class="amt-row"><input type="number" id="pctB" value="10" inputmode="decimal"><span class="unit">%</span></div>
       </div>
-
-      <div class="card">
-        <h3>A는 B의 몇 %?</h3>
-        <div class="field">
-          <label for="pctPartA">A</label>
-          <input type="number" id="pctPartA" value="30" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="pctPartB">B</label>
-          <input type="number" id="pctPartB" value="200" inputmode="decimal">
-        </div>
-        <div id="pctResult3" class="pct-hero">
-          <div class="pct-big">15%</div>
-          <div class="pct-sub">30은 200의 15%</div>
-        </div>
-      </div>
+      <div class="live-result" id="pctR1"><div class="lr-big">1,000</div><div class="lr-sub">10,000의 10%</div></div>
     </section>
 
-    <!-- D-day View -->
-    <section id="view-dday" style="display:none">
-      <div class="card">
-        <h3>D-day 계산</h3>
-        <div class="field">
-          <label for="ddayDate">기준 날짜</label>
-          <input type="date" id="ddayDate">
-        </div>
-        <div class="field">
-          <label for="ddayTarget">목표 날짜</label>
-          <input type="date" id="ddayTarget">
-        </div>
-        <button class="cta-btn" id="ddayCta">D-day 계산하기</button>
-        <div id="ddayResults" class="dday-results"></div>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">2</span>변화율 계산</h2>
+      <div class="field">
+        <label class="lbl">이전 값</label>
+        <div class="amt-row"><input type="number" id="pctFrom" value="100" inputmode="decimal"><span class="unit"></span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">이후 값</label>
+        <div class="amt-row"><input type="number" id="pctTo" value="130" inputmode="decimal"><span class="unit"></span></div>
+      </div>
+      <div class="live-result" id="pctR2"><div class="lr-big">+30%</div><div class="lr-sub">30 증가</div></div>
+    </section>
+
+    <section class="card">
+      <h2 class="sec-title"><span class="num">3</span>A는 B의 몇 %?</h2>
+      <div class="field">
+        <label class="lbl">부분 값 A</label>
+        <div class="amt-row"><input type="number" id="pctPartA" value="30" inputmode="decimal"><span class="unit"></span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">전체 값 B</label>
+        <div class="amt-row"><input type="number" id="pctPartB" value="200" inputmode="decimal"><span class="unit"></span></div>
+      </div>
+      <div class="live-result" id="pctR3"><div class="lr-big">15%</div><div class="lr-sub">30은 200의 15%</div></div>
+    </section>
+  </div>
+
+  <!-- ==================== 할인가 ==================== -->
+  <div class="view" id="view-discount" hidden>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">💰</span>할인가 계산</h2>
+      <div class="field">
+        <label class="lbl">원래 가격</label>
+        <div class="amt-row"><input type="number" id="discPrice" value="50000" inputmode="numeric"><span class="unit">원</span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">할인율</label>
+        <div class="amt-row"><input type="number" id="discRate" value="30" min="0" max="100" inputmode="numeric"><span class="unit">%</span></div>
+        <input type="range" id="discRange" min="0" max="90" step="5" value="30">
+      </div>
+      <div class="grid-2">
+        <div class="live-result" id="discR1"><div class="lr-big">35,000원</div><div class="lr-sub">할인 적용가</div></div>
+        <div class="live-result" id="discR2"><div class="lr-big">15,000원</div><div class="lr-sub">할인 금액</div></div>
+      </div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">🔢</span>1+1 / 2+1 단가 비교</h2>
+      <div class="field">
+        <label class="lbl">상품 가격</label>
+        <div class="amt-row"><input type="number" id="bundlePrice" value="3000" inputmode="numeric"><span class="unit">원</span></div>
+      </div>
+      <div class="grid-2">
+        <div class="live-result" id="bundleR1"><div class="lr-big">1,500원</div><div class="lr-sub">1+1 개당 단가</div></div>
+        <div class="live-result" id="bundleR2"><div class="lr-big">1,000원</div><div class="lr-sub">2+1 개당 단가</div></div>
       </div>
     </section>
   </div>
 
-  <script src="/common/nav.js"></script>
-  <script>
-  (function(){
-    /* ── Tabs ── */
-    const tabs = document.querySelectorAll('.tabs button');
-    const views = {
-      percent: document.getElementById('view-percent'),
-      dday: document.getElementById('view-dday')
-    };
-    const meta = {
-      percent: { eyebrow:'간편 계산', title:'퍼센트 계산기', desc:'비율, 변화율, 할인율을 빠르게 계산해요.' },
-      dday:    { eyebrow:'날짜 계산', title:'D-day 계산기',  desc:'두 날짜 사이의 일수를 계산해요.' }
-    };
+  <!-- ==================== 더치페이 ==================== -->
+  <div class="view" id="view-dutch" hidden>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">🍽️</span>N분의1 더치페이</h2>
+      <div class="field">
+        <label class="lbl">총 금액</label>
+        <div class="amt-row"><input type="number" id="dutchTotal" value="150000" inputmode="numeric"><span class="unit">원</span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">인원 수</label>
+        <div class="amt-row"><input type="number" id="dutchPeople" value="4" min="1" max="100" inputmode="numeric"><span class="unit">명</span></div>
+        <input type="range" id="dutchRange" min="2" max="20" step="1" value="4">
+      </div>
+      <div class="live-result" id="dutchR"><div class="lr-big">37,500원</div><div class="lr-sub">1인당 금액</div></div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">💸</span>팁 계산기</h2>
+      <div class="field">
+        <label class="lbl">결제 금액</label>
+        <div class="amt-row"><input type="number" id="tipTotal" value="100000" inputmode="numeric"><span class="unit">원</span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">팁 비율</label>
+        <div class="seg" id="segTip">
+          <button data-v="5">5%</button>
+          <button data-v="10" class="on">10%</button>
+          <button data-v="15">15%</button>
+          <button data-v="20">20%</button>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="live-result" id="tipR1"><div class="lr-big">10,000원</div><div class="lr-sub">팁 금액</div></div>
+        <div class="live-result" id="tipR2"><div class="lr-big">110,000원</div><div class="lr-sub">총 결제액</div></div>
+      </div>
+    </section>
+  </div>
 
-    function switchTab(key){
-      tabs.forEach(t => t.classList.toggle('on', t.dataset.view === key));
-      Object.keys(views).forEach(k => views[k].style.display = k === key ? '' : 'none');
-      const m = meta[key];
-      document.getElementById('headerEyebrow').textContent = m.eyebrow;
-      document.getElementById('headerTitle').textContent = m.title;
-      document.getElementById('headerDesc').textContent = m.desc;
-    }
-    tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.view)));
+  <!-- ==================== D-day ==================== -->
+  <div class="view" id="view-dday" hidden>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">📅</span>D-day 계산</h2>
+      <div class="field">
+        <label class="lbl">기준 날짜</label>
+        <div class="amt-row"><input type="date" id="ddayFrom" style="flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;color:var(--ink)"></div>
+      </div>
+      <div class="field">
+        <label class="lbl">목표 날짜</label>
+        <div class="amt-row"><input type="date" id="ddayTo" style="flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;color:var(--ink)"></div>
+      </div>
+      <div class="live-result" id="ddayR" style="display:none"><div class="lr-big"></div><div class="lr-sub"></div></div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">📆</span>날짜 더하기/빼기</h2>
+      <div class="field">
+        <label class="lbl">시작 날짜</label>
+        <div class="amt-row"><input type="date" id="dateAddFrom" style="flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;color:var(--ink)"></div>
+      </div>
+      <div class="field">
+        <label class="lbl">더할 일수 <span class="hint">빼려면 음수 입력</span></label>
+        <div class="amt-row"><input type="number" id="dateAddDays" value="100" inputmode="numeric"><span class="unit">일</span></div>
+      </div>
+      <div class="live-result" id="dateAddR"><div class="lr-big">—</div><div class="lr-sub">결과 날짜</div></div>
+    </section>
+  </div>
 
-    /* ── Helpers ── */
-    function fmt(n){
-      if(n === null || isNaN(n)) return '—';
-      const abs = Math.abs(n);
-      if(abs === Infinity) return '∞';
-      if(Number.isInteger(n)) return n.toLocaleString('ko-KR');
-      return parseFloat(n.toFixed(4)).toLocaleString('ko-KR', {maximumFractionDigits:4});
-    }
+  <!-- ==================== 나이 ==================== -->
+  <div class="view" id="view-age" hidden>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">🎂</span>만 나이 · 한국 나이 계산</h2>
+      <div class="field">
+        <label class="lbl">생년월일</label>
+        <div class="amt-row"><input type="date" id="ageBirth" style="flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;color:var(--ink)"></div>
+      </div>
+      <div class="grid-2">
+        <div class="live-result" id="ageR1"><div class="lr-big">—</div><div class="lr-sub">만 나이</div></div>
+        <div class="live-result" id="ageR2"><div class="lr-big">—</div><div class="lr-sub">한국 나이(연 나이)</div></div>
+      </div>
+      <div class="live-result" id="ageR3" style="margin-top:10px"><div class="lr-big">—</div><div class="lr-sub">다음 생일까지</div></div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">🐲</span>띠 · 별자리</h2>
+      <div class="live-result" id="ageR4"><div class="lr-big">생년월일을 입력하세요</div><div class="lr-sub"></div></div>
+    </section>
+  </div>
 
-    /* ── Percent Card 1 ── */
-    const pctA = document.getElementById('pctA');
-    const pctB = document.getElementById('pctB');
-    function calcPct1(){
-      const a = parseFloat(pctA.value);
-      const b = parseFloat(pctB.value);
-      const r = document.getElementById('pctResult1');
-      if(isNaN(a)||isNaN(b)){r.innerHTML='<div class="pct-big">—</div>';return;}
-      const val = a * b / 100;
-      r.innerHTML = '<div class="pct-big">' + fmt(val) + '</div>'
-        + '<div class="pct-sub">' + fmt(a) + '의 ' + fmt(b) + '%</div>';
-    }
-    pctA.addEventListener('input', calcPct1);
-    pctB.addEventListener('input', calcPct1);
+  <!-- ==================== 단위변환 ==================== -->
+  <div class="view" id="view-unit" hidden>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">📏</span>길이</h2>
+      <div class="unit-row"><input type="number" id="uLenA" value="1" inputmode="decimal"><span class="u-label">m</span></div>
+      <div class="grid-2">
+        <div class="live-result" id="uLenCm"><div class="lr-big">100</div><div class="lr-sub">cm</div></div>
+        <div class="live-result" id="uLenFt"><div class="lr-big">3.281</div><div class="lr-sub">ft</div></div>
+        <div class="live-result" id="uLenIn"><div class="lr-big">39.37</div><div class="lr-sub">inch</div></div>
+        <div class="live-result" id="uLenKm"><div class="lr-big">0.001</div><div class="lr-sub">km</div></div>
+      </div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">⚖️</span>무게</h2>
+      <div class="unit-row"><input type="number" id="uWtA" value="1" inputmode="decimal"><span class="u-label">kg</span></div>
+      <div class="grid-2">
+        <div class="live-result" id="uWtG"><div class="lr-big">1,000</div><div class="lr-sub">g</div></div>
+        <div class="live-result" id="uWtLb"><div class="lr-big">2.205</div><div class="lr-sub">lb (파운드)</div></div>
+        <div class="live-result" id="uWtOz"><div class="lr-big">35.27</div><div class="lr-sub">oz (온스)</div></div>
+        <div class="live-result" id="uWtGn"><div class="lr-big">266.7</div><div class="lr-sub">근</div></div>
+      </div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">🌡️</span>온도</h2>
+      <div class="unit-row"><input type="number" id="uTempA" value="36.5" inputmode="decimal"><span class="u-label">℃</span></div>
+      <div class="grid-2">
+        <div class="live-result" id="uTempF"><div class="lr-big">97.7</div><div class="lr-sub">℉ (화씨)</div></div>
+        <div class="live-result" id="uTempK"><div class="lr-big">309.65</div><div class="lr-sub">K (절대온도)</div></div>
+      </div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">📐</span>면적</h2>
+      <div class="unit-row"><input type="number" id="uAreaA" value="33" inputmode="decimal"><span class="u-label">㎡</span></div>
+      <div class="grid-2">
+        <div class="live-result" id="uAreaPy"><div class="lr-big">9.98</div><div class="lr-sub">평</div></div>
+        <div class="live-result" id="uAreaFt"><div class="lr-big">355.2</div><div class="lr-sub">ft²</div></div>
+      </div>
+    </section>
+  </div>
 
-    /* ── Percent Card 2 ── */
-    const pctFrom = document.getElementById('pctFrom');
-    const pctTo   = document.getElementById('pctTo');
-    function calcPct2(){
-      const a = parseFloat(pctFrom.value);
-      const b = parseFloat(pctTo.value);
-      const r = document.getElementById('pctResult2');
-      if(isNaN(a)||isNaN(b)||a===0){r.innerHTML='<div class="pct-big">—</div>';return;}
-      const change = ((b - a) / Math.abs(a)) * 100;
-      const diff = b - a;
-      const sign = change >= 0 ? '+' : '';
-      const word = diff > 0 ? '증가' : diff < 0 ? '감소' : '변화 없음';
-      r.innerHTML = '<div class="pct-big">' + sign + fmt(parseFloat(change.toFixed(4))) + '%</div>'
-        + '<div class="pct-sub">' + fmt(Math.abs(diff)) + ' ' + word + '</div>';
-    }
-    pctFrom.addEventListener('input', calcPct2);
-    pctTo.addEventListener('input', calcPct2);
+  <!-- ==================== 속도·시간 ==================== -->
+  <div class="view" id="view-speed" hidden>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">🚗</span>속도 · 거리 · 시간</h2>
+      <div class="field">
+        <label class="lbl">거리</label>
+        <div class="amt-row"><input type="number" id="spdDist" value="300" inputmode="decimal"><span class="unit">km</span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">속도</label>
+        <div class="amt-row"><input type="number" id="spdSpeed" value="100" inputmode="decimal"><span class="unit">km/h</span></div>
+      </div>
+      <div class="live-result" id="spdR"><div class="lr-big">3시간 0분</div><div class="lr-sub">예상 소요 시간</div></div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">🏃</span>속도 단위 변환</h2>
+      <div class="unit-row"><input type="number" id="spdConv" value="100" inputmode="decimal"><span class="u-label">km/h</span></div>
+      <div class="grid-2">
+        <div class="live-result" id="spdMs"><div class="lr-big">27.78</div><div class="lr-sub">m/s</div></div>
+        <div class="live-result" id="spdMph"><div class="lr-big">62.14</div><div class="lr-sub">mph</div></div>
+      </div>
+    </section>
+  </div>
 
-    /* ── Percent Card 3 ── */
-    const pctPartA = document.getElementById('pctPartA');
-    const pctPartB = document.getElementById('pctPartB');
-    function calcPct3(){
-      const a = parseFloat(pctPartA.value);
-      const b = parseFloat(pctPartB.value);
-      const r = document.getElementById('pctResult3');
-      if(isNaN(a)||isNaN(b)||b===0){r.innerHTML='<div class="pct-big">—</div>';return;}
-      const pct = (a / b) * 100;
-      r.innerHTML = '<div class="pct-big">' + fmt(parseFloat(pct.toFixed(4))) + '%</div>'
-        + '<div class="pct-sub">' + fmt(a) + '은(는) ' + fmt(b) + '의 ' + fmt(parseFloat(pct.toFixed(4))) + '%</div>';
-    }
-    pctPartA.addEventListener('input', calcPct3);
-    pctPartB.addEventListener('input', calcPct3);
+  <!-- ==================== 연비 ==================== -->
+  <div class="view" id="view-fuel" hidden>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">⛽</span>자동차 연비 계산</h2>
+      <div class="field">
+        <label class="lbl">주행 거리</label>
+        <div class="amt-row"><input type="number" id="fuelDist" value="500" inputmode="decimal"><span class="unit">km</span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">주유량</label>
+        <div class="amt-row"><input type="number" id="fuelLiter" value="45" inputmode="decimal"><span class="unit">L</span></div>
+      </div>
+      <div class="live-result" id="fuelR1"><div class="lr-big">11.1 km/L</div><div class="lr-sub">실제 연비</div></div>
+    </section>
+    <section class="card">
+      <h2 class="sec-title"><span class="num">💰</span>주유비 · 여행 유류비</h2>
+      <div class="field">
+        <label class="lbl">주행 거리</label>
+        <div class="amt-row"><input type="number" id="fuelTripDist" value="300" inputmode="decimal"><span class="unit">km</span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">차량 연비</label>
+        <div class="amt-row"><input type="number" id="fuelTripEff" value="12" inputmode="decimal"><span class="unit">km/L</span></div>
+      </div>
+      <div class="field">
+        <label class="lbl">유가 (리터당)</label>
+        <div class="amt-row"><input type="number" id="fuelTripPrice" value="1650" inputmode="numeric"><span class="unit">원/L</span></div>
+      </div>
+      <div class="grid-2">
+        <div class="live-result" id="fuelR2"><div class="lr-big">25.0L</div><div class="lr-sub">예상 주유량</div></div>
+        <div class="live-result" id="fuelR3"><div class="lr-big">41,250원</div><div class="lr-sub">예상 유류비</div></div>
+      </div>
+    </section>
+  </div>
 
-    /* ── D-day ── */
-    const ddayDate   = document.getElementById('ddayDate');
-    const ddayTarget = document.getElementById('ddayTarget');
-    const ddayCta    = document.getElementById('ddayCta');
-    const ddayResults= document.getElementById('ddayResults');
+</div>
 
-    // Set default to today
-    const today = new Date();
-    ddayDate.value = today.toISOString().slice(0,10);
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+const fmt = n => {
+  if(n===null||isNaN(n)) return '—';
+  const a=Math.abs(n);
+  if(a===Infinity) return '∞';
+  if(a>=1) return parseFloat(n.toFixed(2)).toLocaleString('ko-KR');
+  return parseFloat(n.toFixed(4)).toLocaleString('ko-KR',{maximumFractionDigits:4});
+};
 
-    const dayNames = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+/* ── 탭 전환 ── */
+const TAB_META = {
+  percent:{e:'간편 계산',t:'퍼센트 계산기',d:'비율, 변화율을 빠르게 계산해요.'},
+  discount:{e:'쇼핑 계산',t:'할인가 계산기',d:'할인율 적용가와 1+1/2+1 단가를 비교해요.'},
+  dutch:{e:'모임 계산',t:'더치페이 계산기',d:'N분의1 금액과 팁을 계산해요.'},
+  dday:{e:'날짜 계산',t:'D-day 계산기',d:'두 날짜 사이 일수와 날짜 더하기를 계산해요.'},
+  age:{e:'나이 계산',t:'나이 계산기',d:'만 나이, 한국 나이, 띠, 별자리를 알려드려요.'},
+  unit:{e:'단위 변환',t:'단위 변환기',d:'길이, 무게, 온도, 면적을 한 번에 변환해요.'},
+  speed:{e:'이동 계산',t:'속도·시간 계산기',d:'거리와 속도로 소요 시간을 계산해요.'},
+  fuel:{e:'자동차',t:'연비 계산기',d:'실제 연비와 여행 유류비를 계산해요.'}
+};
+let activeTab='percent';
+document.querySelectorAll('#tabs button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    activeTab=btn.dataset.tab;
+    document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b===btn));
+    document.querySelectorAll('.view').forEach(v=>{v.hidden=(v.id!=='view-'+activeTab);});
+    const m=TAB_META[activeTab];
+    document.getElementById('headerEyebrow').textContent=m.e;
+    document.getElementById('headerTitle').textContent=m.t;
+    document.getElementById('headerDesc').textContent=m.d;
+  });
+});
 
-    function calcDday(){
-      const d1 = ddayDate.value;
-      const d2 = ddayTarget.value;
-      if(!d1||!d2){ddayResults.innerHTML='';return;}
+/* ── 퍼센트 (라이브) ── */
+function livePct1(){
+  const a=+document.getElementById('pctA').value,b=+document.getElementById('pctB').value;
+  const r=a*b/100;
+  document.getElementById('pctR1').innerHTML=`<div class="lr-big">${fmt(r)}</div><div class="lr-sub">${fmt(a)}의 ${fmt(b)}%</div>`;
+}
+function livePct2(){
+  const a=+document.getElementById('pctFrom').value,b=+document.getElementById('pctTo').value;
+  if(!a){document.getElementById('pctR2').innerHTML='<div class="lr-big">—</div>';return;}
+  const p=((b-a)/Math.abs(a))*100,d=b-a;
+  document.getElementById('pctR2').innerHTML=`<div class="lr-big">${p>=0?'+':''}${fmt(p)}%</div><div class="lr-sub">${fmt(Math.abs(d))} ${d>=0?'증가':'감소'}</div>`;
+}
+function livePct3(){
+  const a=+document.getElementById('pctPartA').value,b=+document.getElementById('pctPartB').value;
+  if(!b){document.getElementById('pctR3').innerHTML='<div class="lr-big">—</div>';return;}
+  const p=(a/b)*100;
+  document.getElementById('pctR3').innerHTML=`<div class="lr-big">${fmt(p)}%</div><div class="lr-sub">${fmt(a)}은(는) ${fmt(b)}의 ${fmt(p)}%</div>`;
+}
+['pctA','pctB'].forEach(id=>document.getElementById(id).addEventListener('input',livePct1));
+['pctFrom','pctTo'].forEach(id=>document.getElementById(id).addEventListener('input',livePct2));
+['pctPartA','pctPartB'].forEach(id=>document.getElementById(id).addEventListener('input',livePct3));
 
-      const date1 = new Date(d1 + 'T00:00:00');
-      const date2 = new Date(d2 + 'T00:00:00');
-      const diffMs = date2.getTime() - date1.getTime();
-      const diffDays = Math.round(diffMs / (1000*60*60*24));
-      const absDays = Math.abs(diffDays);
-      const weeks = Math.floor(absDays / 7);
-      const remainDays = absDays % 7;
-      const targetDay = dayNames[date2.getDay()];
+/* ── 할인가 (라이브) ── */
+function liveDisc(){
+  const p=+document.getElementById('discPrice').value,r=+document.getElementById('discRate').value;
+  const sale=p*(1-r/100),save=p*r/100;
+  document.getElementById('discR1').innerHTML=`<div class="lr-big">${Math.round(sale).toLocaleString()}원</div><div class="lr-sub">할인 적용가</div>`;
+  document.getElementById('discR2').innerHTML=`<div class="lr-big">${Math.round(save).toLocaleString()}원</div><div class="lr-sub">할인 금액 (${r}%)</div>`;
+}
+function liveBundle(){
+  const p=+document.getElementById('bundlePrice').value;
+  document.getElementById('bundleR1').innerHTML=`<div class="lr-big">${Math.round(p/2).toLocaleString()}원</div><div class="lr-sub">1+1 개당 단가 (50%↓)</div>`;
+  document.getElementById('bundleR2').innerHTML=`<div class="lr-big">${Math.round(p/3).toLocaleString()}원</div><div class="lr-sub">2+1 개당 단가 (67%↓)</div>`;
+}
+['discPrice','discRate','discRange'].forEach(id=>document.getElementById(id).addEventListener('input',e=>{
+  if(id==='discRange')document.getElementById('discRate').value=e.target.value;
+  if(id==='discRate')document.getElementById('discRange').value=e.target.value;
+  liveDisc();
+}));
+document.getElementById('bundlePrice').addEventListener('input',liveBundle);
 
-      let label, prefix;
-      if(diffDays > 0){
-        label = 'D-' + diffDays;
-        prefix = '목표일까지';
-      } else if(diffDays < 0){
-        label = 'D+' + absDays;
-        prefix = '목표일로부터';
-      } else {
-        label = 'D-Day';
-        prefix = '오늘이';
-      }
+/* ── 더치페이 (라이브) ── */
+function liveDutch(){
+  const t=+document.getElementById('dutchTotal').value,p=+document.getElementById('dutchPeople').value;
+  if(!p)return;
+  const per=Math.ceil(t/p);
+  document.getElementById('dutchR').innerHTML=`<div class="lr-big">${per.toLocaleString()}원</div><div class="lr-sub">1인당 (${p}명)</div>`;
+}
+let tipRate=10;
+function liveTip(){
+  const t=+document.getElementById('tipTotal').value;
+  const tip=Math.round(t*tipRate/100);
+  document.getElementById('tipR1').innerHTML=`<div class="lr-big">${tip.toLocaleString()}원</div><div class="lr-sub">팁 금액 (${tipRate}%)</div>`;
+  document.getElementById('tipR2').innerHTML=`<div class="lr-big">${(t+tip).toLocaleString()}원</div><div class="lr-sub">총 결제액</div>`;
+}
+['dutchTotal','dutchPeople','dutchRange'].forEach(id=>document.getElementById(id).addEventListener('input',e=>{
+  if(id==='dutchRange')document.getElementById('dutchPeople').value=e.target.value;
+  if(id==='dutchPeople'){const v=Math.max(1,+e.target.value||1);document.getElementById('dutchRange').value=Math.min(20,v);}
+  liveDutch();
+}));
+document.querySelectorAll('#segTip button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#segTip button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');tipRate=+b.dataset.v;liveTip();
+  });
+});
+document.getElementById('tipTotal').addEventListener('input',liveTip);
 
-      let detail = '';
-      if(diffDays !== 0){
-        detail = prefix + ' <strong>' + absDays + '일</strong>';
-        if(weeks > 0){
-          detail += ' (' + weeks + '주';
-          if(remainDays > 0) detail += ' ' + remainDays + '일';
-          detail += ')';
-        }
-      } else {
-        detail = prefix + ' 바로 그 날이에요!';
-      }
+/* ── D-day ── */
+const DAYS=['일','월','화','수','목','금','토'];
+const ddF=document.getElementById('ddayFrom'),ddT=document.getElementById('ddayTo');
+ddF.value=new Date().toISOString().slice(0,10);
+function liveDday(){
+  if(!ddF.value||!ddT.value){document.getElementById('ddayR').style.display='none';return;}
+  const a=new Date(ddF.value+'T00:00:00'),b=new Date(ddT.value+'T00:00:00');
+  const diff=Math.round((b-a)/(864e5)),abs=Math.abs(diff);
+  const w=Math.floor(abs/7),r=abs%7;
+  let label=diff>0?'D-'+diff:diff<0?'D+'+abs:'D-Day';
+  let sub=diff>0?`목표일까지 ${abs}일`:diff<0?`${abs}일 지남`:'오늘이에요!';
+  if(w>0) sub+=` (${w}주 ${r}일)`;
+  sub+=` · ${ddT.value} (${DAYS[b.getDay()]}요일)`;
+  document.getElementById('ddayR').style.display='';
+  document.getElementById('ddayR').innerHTML=`<div class="lr-big">${label}</div><div class="lr-sub">${sub}</div>`;
+}
+ddF.addEventListener('change',liveDday);ddT.addEventListener('change',liveDday);
 
-      ddayResults.innerHTML =
-        '<div class="pct-hero"><div class="pct-big">' + label + '</div></div>'
-        + '<div class="dday-detail">' + detail + '<br>목표일: ' + d2 + ' (' + targetDay + ')</div>';
-    }
+const daF=document.getElementById('dateAddFrom'),daD=document.getElementById('dateAddDays');
+daF.value=new Date().toISOString().slice(0,10);
+function liveDateAdd(){
+  if(!daF.value)return;
+  const d=new Date(daF.value+'T00:00:00');
+  d.setDate(d.getDate()+(+daD.value||0));
+  const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');
+  document.getElementById('dateAddR').innerHTML=`<div class="lr-big">${y}-${m}-${day}</div><div class="lr-sub">${DAYS[d.getDay()]}요일</div>`;
+}
+daF.addEventListener('change',liveDateAdd);daD.addEventListener('input',liveDateAdd);
+liveDateAdd();
 
-    ddayCta.addEventListener('click', calcDday);
-  })();
-  </script>
+/* ── 나이 ── */
+document.getElementById('ageBirth').addEventListener('change',function(){
+  const b=new Date(this.value+'T00:00:00'),now=new Date();
+  let manAge=now.getFullYear()-b.getFullYear();
+  if(now.getMonth()<b.getMonth()||(now.getMonth()===b.getMonth()&&now.getDate()<b.getDate()))manAge--;
+  const korAge=now.getFullYear()-b.getFullYear()+1;
+  document.getElementById('ageR1').innerHTML=`<div class="lr-big">${manAge}세</div><div class="lr-sub">만 나이 (국제 기준)</div>`;
+  document.getElementById('ageR2').innerHTML=`<div class="lr-big">${korAge}세</div><div class="lr-sub">연 나이 (한국식)</div>`;
+  // 다음 생일
+  let nextBday=new Date(now.getFullYear(),b.getMonth(),b.getDate());
+  if(nextBday<=now) nextBday=new Date(now.getFullYear()+1,b.getMonth(),b.getDate());
+  const daysLeft=Math.ceil((nextBday-now)/(864e5));
+  document.getElementById('ageR3').innerHTML=`<div class="lr-big">${daysLeft}일</div><div class="lr-sub">다음 생일까지 (${nextBday.getFullYear()}-${String(nextBday.getMonth()+1).padStart(2,'0')}-${String(nextBday.getDate()).padStart(2,'0')})</div>`;
+  // 띠 · 별자리
+  const animals=['원숭이','닭','개','돼지','쥐','소','호랑이','토끼','용','뱀','말','양'];
+  const animal=animals[b.getFullYear()%12];
+  const md=b.getMonth()*100+b.getDate();
+  const signs=[['염소',119],['물병',218],['물고기',320],['양',419],['황소',520],['쌍둥이',620],['게',722],['사자',822],['처녀',922],['천칭',1022],['전갈',1121],['사수',1221],['염소',1231]];
+  let star='염소';for(const[s,d]of signs){if(md<=d){star=s;break;}}
+  document.getElementById('ageR4').innerHTML=`<div class="lr-big">${animal}띠 · ${star}자리</div><div class="lr-sub">${b.getFullYear()}년생</div>`;
+});
+
+/* ── 단위변환 (라이브) ── */
+document.getElementById('uLenA').addEventListener('input',function(){
+  const v=+this.value||0;
+  document.getElementById('uLenCm').querySelector('.lr-big').textContent=fmt(v*100);
+  document.getElementById('uLenFt').querySelector('.lr-big').textContent=fmt(v*3.28084);
+  document.getElementById('uLenIn').querySelector('.lr-big').textContent=fmt(v*39.3701);
+  document.getElementById('uLenKm').querySelector('.lr-big').textContent=fmt(v/1000);
+});
+document.getElementById('uWtA').addEventListener('input',function(){
+  const v=+this.value||0;
+  document.getElementById('uWtG').querySelector('.lr-big').textContent=fmt(v*1000);
+  document.getElementById('uWtLb').querySelector('.lr-big').textContent=fmt(v*2.20462);
+  document.getElementById('uWtOz').querySelector('.lr-big').textContent=fmt(v*35.274);
+  document.getElementById('uWtGn').querySelector('.lr-big').textContent=fmt(v/0.6*1);
+});
+document.getElementById('uTempA').addEventListener('input',function(){
+  const v=+this.value||0;
+  document.getElementById('uTempF').querySelector('.lr-big').textContent=fmt(v*9/5+32);
+  document.getElementById('uTempK').querySelector('.lr-big').textContent=fmt(v+273.15);
+});
+document.getElementById('uAreaA').addEventListener('input',function(){
+  const v=+this.value||0;
+  document.getElementById('uAreaPy').querySelector('.lr-big').textContent=fmt(v/3.3058);
+  document.getElementById('uAreaFt').querySelector('.lr-big').textContent=fmt(v*10.7639);
+});
+
+/* ── 속도·시간 (라이브) ── */
+function liveSpeed(){
+  const d=+document.getElementById('spdDist').value,s=+document.getElementById('spdSpeed').value;
+  if(!s){document.getElementById('spdR').innerHTML='<div class="lr-big">—</div>';return;}
+  const h=d/s,hr=Math.floor(h),mn=Math.round((h-hr)*60);
+  document.getElementById('spdR').innerHTML=`<div class="lr-big">${hr}시간 ${mn}분</div><div class="lr-sub">${fmt(d)}km ÷ ${fmt(s)}km/h</div>`;
+}
+['spdDist','spdSpeed'].forEach(id=>document.getElementById(id).addEventListener('input',liveSpeed));
+document.getElementById('spdConv').addEventListener('input',function(){
+  const v=+this.value||0;
+  document.getElementById('spdMs').querySelector('.lr-big').textContent=fmt(v/3.6);
+  document.getElementById('spdMph').querySelector('.lr-big').textContent=fmt(v*0.621371);
+});
+
+/* ── 연비 (라이브) ── */
+function liveFuel1(){
+  const d=+document.getElementById('fuelDist').value,l=+document.getElementById('fuelLiter').value;
+  if(!l){document.getElementById('fuelR1').innerHTML='<div class="lr-big">—</div>';return;}
+  document.getElementById('fuelR1').innerHTML=`<div class="lr-big">${fmt(d/l)} km/L</div><div class="lr-sub">${fmt(d)}km ÷ ${fmt(l)}L</div>`;
+}
+function liveFuel2(){
+  const d=+document.getElementById('fuelTripDist').value,e=+document.getElementById('fuelTripEff').value,p=+document.getElementById('fuelTripPrice').value;
+  if(!e){return;}
+  const liters=d/e,cost=liters*p;
+  document.getElementById('fuelR2').innerHTML=`<div class="lr-big">${fmt(liters)}L</div><div class="lr-sub">예상 주유량</div>`;
+  document.getElementById('fuelR3').innerHTML=`<div class="lr-big">${Math.round(cost).toLocaleString()}원</div><div class="lr-sub">예상 유류비</div>`;
+}
+['fuelDist','fuelLiter'].forEach(id=>document.getElementById(id).addEventListener('input',liveFuel1));
+['fuelTripDist','fuelTripEff','fuelTripPrice'].forEach(id=>document.getElementById(id).addEventListener('input',liveFuel2));
+
+})();
+</script>
 </body>
 </html>
