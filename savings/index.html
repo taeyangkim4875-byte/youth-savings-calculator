@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+
+<title>적금 환승 비교 계산기 - 청년도약계좌 vs 미래적금 | 모든 계산기</title>
+<meta name="description" content="청년도약계좌 만기 유지와 청년미래적금 환승, 어느 쪽이 유리한지 실수령액으로 비교해 보세요. 2026 최신 정책 반영.">
+<link rel="canonical" href="https://moduncalc.com/savings/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="적금 환승 비교 계산기 - 청년도약계좌 vs 미래적금 | 모든 계산기">
+<meta property="og:description" content="청년도약계좌 만기 유지와 청년미래적금 환승, 어느 쪽이 유리한지 실수령액으로 비교해 보세요.">
+<meta property="og:url" content="https://moduncalc.com/savings/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">2026 최신 정책 반영</div>
+    <h1>적금 환승 비교</h1>
+    <p>청년도약계좌 유지와 미래적금 환승 중 어느 쪽이 유리한지 비교해 드려요.</p>
+  </header>
+
+  <!-- Section 1: 개인·가구 정보 -->
+  <section class="card">
+    <h2 class="sec-title"><span class="num">1</span>개인 · 가구 정보</h2>
+
+    <div class="field">
+      <label class="lbl">가구원 수</label>
+      <div class="seg" id="segHousehold">
+        <button type="button" data-v="1">1인</button>
+        <button type="button" data-v="2">2인</button>
+        <button type="button" data-v="3" class="on">3인</button>
+        <button type="button" data-v="4">4인</button>
+        <button type="button" data-v="5">5인</button>
+        <button type="button" data-v="6">6인</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">본인 총급여 (연) <span class="hint" id="salaryLabel">3,000만원</span></label>
+      <div class="amt-row">
+        <input type="number" id="salary" value="3000" min="0" max="99999">
+        <span class="unit">만원</span>
+      </div>
+      <input type="range" id="salaryRange" min="0" max="8000" value="3000" step="100">
+      <div class="range-val">근로소득 원천징수영수증 기준</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">가구 월 소득 <span class="hint" id="medianLabel">기준 중위소득 대비 <b>75%</b></span></label>
+      <div class="amt-row">
+        <input type="number" id="houseIncome" value="400" min="0" max="9999">
+        <span class="unit">만원</span>
+      </div>
+      <div class="range-val">본인 포함 가구 전체 세전 월 소득</div>
+    </div>
+
+    <div class="field">
+      <div class="toggle-row" id="rowDual">
+        <div>
+          <div class="t-txt">맞벌이 가구</div>
+          <div class="t-sub">2인 가구 맞벌이 시 미래적금 우대형 기준 완화</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="dual"><span class="slider"></span></label>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="toggle-row" id="rowSme">
+        <div>
+          <div class="t-txt">중소기업 재직자</div>
+          <div class="t-sub">중소기업 재직 시 청년도약계좌 우대금리 추가 가능</div>
+        </div>
+        <label class="switch"><input type="checkbox" id="sme"><span class="slider"></span></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: 납입·금리·우대 -->
+  <section class="card">
+    <h2 class="sec-title"><span class="num">2</span>납입 · 금리 · 우대 조건</h2>
+
+    <div class="field">
+      <label class="lbl">월 납입액 <span class="hint" id="payLabel">70만원</span></label>
+      <input type="range" id="payRange" min="0" max="70" value="70" step="1">
+      <div class="range-val">청년도약계좌 최대 70만원 · 미래적금 최대 50만원 자동 적용</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">청년도약 기본금리 (1~3년차)</label>
+      <select id="baseRate">
+        <option value="3.0">3.0%</option>
+        <option value="3.5">3.5%</option>
+        <option value="4.0">4.0%</option>
+        <option value="4.5" selected>4.5%</option>
+      </select>
+      <div class="range-val">가입 시점 은행 제시 기본금리</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">4~5년차 변동금리</label>
+      <select id="varRate">
+        <option value="2.0">2.0%</option>
+        <option value="2.5">2.5%</option>
+        <option value="3.0" selected>3.0%</option>
+        <option value="3.5">3.5%</option>
+        <option value="4.0">4.0%</option>
+      </select>
+      <div class="range-val">4년차 이후 변동 적용 예상 금리</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">청년도약 우대금리</label>
+      <div class="amt-row">
+        <input type="number" id="dohyakBonus" value="1.5" min="0" max="1.5" step="0.1">
+        <span class="unit">%</span>
+      </div>
+      <div class="range-val">은행별 우대 조건 충족 시 최대 1.5%p</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">우대금리 적용 시작</label>
+      <select id="bonusStart">
+        <option value="1" selected>1개월차부터 (가입 시점)</option>
+        <option value="4">4개월차부터</option>
+        <option value="7">7개월차부터</option>
+        <option value="13">13개월차부터 (1년 후)</option>
+        <option value="25">25개월차부터 (2년 후)</option>
+      </select>
+      <div class="range-val">우대금리가 실제 적용되기 시작하는 시점</div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">미래적금 우대금리</label>
+      <div class="amt-row">
+        <input type="number" id="miraeBonus" value="3.0" min="0" max="3.0" step="0.1">
+        <span class="unit">%</span>
+      </div>
+      <div class="range-val">기본 5.0% + 우대 최대 3.0%p = 최대 8.0%</div>
+    </div>
+  </section>
+
+  <div id="results"><div class="card empty">계산하기 버튼을 누르면 두 상품을 비교해 드려요.</div></div>
+
+  <footer>
+    <b>계산 가정</b><br>
+    · 청년도약계좌: 5년 만기, 단리, 비과세, 정부 기여금 매칭 (소득 구간별 차등)<br>
+    · 청년미래적금: 3년 만기, 단리, 비과세(ISA 경유), 정부 기여금 (우대형 12% / 일반형 6%)<br>
+    · 기여금 매칭 한도·비율은 2026년 정부 발표 기준<br>
+    · 이자는 월복리가 아닌 단리(적립식) 공식 적용<br>
+    · 중위소득 기준: 2026년 보건복지부 고시
+
+    <div class="disclaimer">
+      <b>면책 안내</b><br>
+      이 계산기는 공개된 정책·금리를 기반으로 한 추정치를 제공하며, 실제 수령액과 다를 수 있습니다. 정확한 금액은 해당 은행 상품설명서 또는 서민금융진흥원에서 확인하세요. 본 서비스 이용으로 발생한 손해에 대해 책임지지 않습니다.
+    </div>
+  </footer>
+
+  <div class="cta-bar"><button class="cta" id="calcBtn">실수령액 계산하기</button></div>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+
+const MEDIAN_2026 = {1:2564238,2:4199292,3:5359036,4:6494738,5:7556719,6:8555952};
+const ISA_TAX_RATE=0.099, NORMAL_TAX_RATE=0.154;
+const DOHYAK_MONTHS=60, MIRAE_MONTHS=36, MIRAE_PAY_CAP=500000;
+
+function rentInterest(monthly,annualRate,months){
+  return monthly*(annualRate/12)*months*(months+1)/2;
+}
+function rentInterestSchedule(monthly,rateArr){
+  let acc=0;
+  for(let m=1;m<=rateArr.length;m++) acc+=(rateArr[m-1]/12)*m;
+  return monthly*acc;
+}
+function dohyakSchedule(baseRate,varRate,bonus,incomeBonus,startMonth){
+  const arr=[];
+  for(let m=1;m<=60;m++){
+    const base=(m<=36)?baseRate:varRate;
+    const bn=(m>=startMonth)?bonus:0;
+    arr.push((base+bn+incomeBonus)/100);
+  }
+  return arr;
+}
+function dohyakRateSegments(baseRate,varRate,bonus,incomeBonus,startMonth){
+  const bounds=[...new Set([1,startMonth,37].filter(x=>x>=1&&x<=60))].sort((a,b)=>a-b);
+  const segs=[];
+  for(let i=0;i<bounds.length;i++){
+    const from=bounds[i],to=(i+1<bounds.length)?bounds[i+1]-1:60;
+    const base=(from<=36)?baseRate:varRate;
+    const bn=(from>=startMonth)?bonus:0;
+    segs.push({from,to,rate:base+bn+incomeBonus});
+  }
+  return segs;
+}
+function dohyakTier(salaryMan){
+  if(salaryMan<=2400)return{limit:400000,ratio:0.060,label:'총급여 2,400만 이하'};
+  if(salaryMan<=3600)return{limit:500000,ratio:0.046,label:'총급여 3,600만 이하'};
+  if(salaryMan<=4800)return{limit:600000,ratio:0.037,label:'총급여 4,800만 이하'};
+  if(salaryMan<=6000)return{limit:700000,ratio:0.030,label:'총급여 6,000만 이하'};
+  if(salaryMan<=7500)return{limit:0,ratio:0,label:'비과세만 적용'};
+  return null;
+}
+function miraeType(salaryMan,medianRatio,size,dual){
+  if(salaryMan>7500)return{type:'이용불가',reason:'income'};
+  const eligCeil=(size===2)?250:200;
+  if(medianRatio>eligCeil)return{type:'이용불가',reason:'median'};
+  let upperCap=150;
+  if(dual&&size===2)upperCap=200;
+  if(salaryMan<=3600&&medianRatio<=upperCap)return{type:'우대형',rate:0.12,cap:60000,label:'우대형 (납입액 12%)'};
+  let normalCap=200;if(size===2)normalCap=250;
+  if(salaryMan<=6000&&medianRatio<=normalCap)return{type:'일반형',rate:0.06,cap:30000,label:'일반형 (납입액 6%)'};
+  return{type:'비과세형',rate:0,cap:0,label:'비과세만 적용 (기여금 없음)'};
+}
+
+// State
+const state={size:3,salary:3000,houseIncome:400,dual:false,sme:false,pay:70,baseRate:4.5,varRate:3.0,dohyakBonus:1.5,bonusStart:1,miraeBonus:3.0};
+
+// Segment buttons (가구원 수)
+document.querySelectorAll('#segHousehold button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('#segHousehold button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on');state.size=+b.dataset.v;updateMedianLabel();
+  });
+});
+
+// 총급여 sync
+const salaryEl=document.getElementById('salary'),salaryRange=document.getElementById('salaryRange'),salaryLabel=document.getElementById('salaryLabel');
+function syncSalary(v){v=Math.max(0,v|0);state.salary=v;salaryEl.value=v;salaryRange.value=Math.min(8000,v);salaryLabel.textContent=v.toLocaleString('ko-KR')+'만원';}
+salaryEl.addEventListener('input',e=>syncSalary(+e.target.value||0));
+salaryRange.addEventListener('input',e=>syncSalary(+e.target.value));
+
+// 가구 월소득
+const houseEl=document.getElementById('houseIncome');
+houseEl.addEventListener('input',e=>{state.houseIncome=Math.max(0,+e.target.value||0);updateMedianLabel();});
+
+function updateMedianLabel(){
+  const median=MEDIAN_2026[state.size];
+  const ratio=median?(state.houseIncome*10000/median*100):0;
+  document.getElementById('medianLabel').innerHTML='기준 중위소득 대비 <b>'+ratio.toFixed(0)+'%</b>';
+}
+
+// Toggles
+function bindToggle(id,rowId,key){
+  const el=document.getElementById(id),row=document.getElementById(rowId);
+  el.addEventListener('change',()=>{state[key]=el.checked;row.classList.toggle('on',el.checked);});
+}
+bindToggle('dual','rowDual','dual');
+bindToggle('sme','rowSme','sme');
+
+// 월 납입액
+document.getElementById('payRange').addEventListener('input',e=>{state.pay=+e.target.value;document.getElementById('payLabel').textContent=state.pay+'만원';});
+
+// 금리 selects
+document.getElementById('baseRate').addEventListener('change',e=>state.baseRate=+e.target.value);
+document.getElementById('varRate').addEventListener('change',e=>state.varRate=+e.target.value);
+
+// 우대금리
+const clamp=(v,min,max)=>Math.min(max,Math.max(min,isNaN(v)?min:v));
+const dohyakBonusEl=document.getElementById('dohyakBonus'),miraeBonusEl=document.getElementById('miraeBonus');
+dohyakBonusEl.addEventListener('input',e=>state.dohyakBonus=clamp(+e.target.value,0,1.5));
+dohyakBonusEl.addEventListener('blur',e=>{state.dohyakBonus=clamp(+e.target.value,0,1.5);e.target.value=state.dohyakBonus;});
+miraeBonusEl.addEventListener('input',e=>state.miraeBonus=clamp(+e.target.value,0,3.0));
+miraeBonusEl.addEventListener('blur',e=>{state.miraeBonus=clamp(+e.target.value,0,3.0);e.target.value=state.miraeBonus;});
+
+document.getElementById('bonusStart').addEventListener('change',e=>state.bonusStart=+e.target.value);
+updateMedianLabel();
+
+// CTA
+document.getElementById('calcBtn').addEventListener('click',calculate);
+
+function calculate(){
+  const s=state;
+  const payMonthly=s.pay*10000;
+  const miraePayMonthly=Math.min(payMonthly,MIRAE_PAY_CAP);
+  const incomeWon=s.houseIncome*10000;
+  const median=MEDIAN_2026[s.size];
+  const medianRatio=median?(incomeWon/median*100):9999;
+  let html='<div class="result-head">비교 결과</div>';
+
+  if(s.salary>7500){
+    html+='<div class="warn">총급여 7,500만원 초과 — 청년도약계좌·청년미래적금 가입 대상이 아닙니다.</div>';
+  }
+
+  // Card 1: 청년도약계좌
+  const tier=dohyakTier(s.salary);
+  if(tier){
+    const incomeBonus=(s.salary<=2400)?0.5:0;
+    const sched=dohyakSchedule(s.baseRate,s.varRate,s.dohyakBonus,incomeBonus,s.bonusStart);
+    const segs=dohyakRateSegments(s.baseRate,s.varRate,s.dohyakBonus,incomeBonus,s.bonusStart);
+    const contribMonthly=Math.min(payMonthly,tier.limit)*tier.ratio;
+    const principal=payMonthly*DOHYAK_MONTHS;
+    const contribSum=contribMonthly*DOHYAK_MONTHS;
+    const intPay=rentInterestSchedule(payMonthly,sched);
+    const intContrib=rentInterestSchedule(contribMonthly,sched);
+    const interestSum=intPay+intContrib;
+    const total=principal+contribSum+interestSum;
+    const segLabel=segs.map(g=>`${g.from}~${g.to}개월 연 ${g.rate.toFixed(1)}%`).join(' → ');
+    html+=`<div class="rcard" data-amt="${total}"><span class="tag blue">만기 유지 · 5년</span><h3>청년도약계좌 만기 유지</h3><div class="sub">${tier.label} · 월 ${won(payMonthly)} 납입</div><div class="rate-track">${segLabel}</div><div class="big-amt">${won(total)}</div><div class="breakdown"><div class="brow"><span class="k">납입 원금</span><span class="v">${won(principal)}</span></div><div class="brow violet"><span class="k">정부 기여금<span class="chip violet">매칭</span></span><span class="v">${won(contribSum)}</span></div><div class="brow green"><span class="k">이자<span class="chip green">비과세</span></span><span class="v">${won(interestSum)}</span></div></div></div>`;
+  }
+
+  // Card 2: 미래적금
+  if(s.salary<=7500){
+    const mt=miraeType(s.salary,medianRatio,s.size,s.dual);
+    if(mt&&mt.type==='이용불가'){
+      const why=mt.reason==='median'?`가구 중위소득이 미래적금 가입 기준(${s.size===2?'2인 가구 250%':'200%'})을 초과해 가입 대상이 아닙니다.`:'총급여가 미래적금 가입 기준을 초과합니다.';
+      html+=`<div class="warn">${why}</div>`;
+    }else if(mt){
+      const rate=(5.0+s.miraeBonus)/100;
+      const contribMonthly=Math.min(miraePayMonthly*mt.rate,mt.cap);
+      const principal=miraePayMonthly*MIRAE_MONTHS;
+      const contribSum=contribMonthly*MIRAE_MONTHS;
+      const intPay=rentInterest(miraePayMonthly,rate,MIRAE_MONTHS);
+      const intContrib=rentInterest(contribMonthly,rate,MIRAE_MONTHS);
+      const interestSum=intPay+intContrib;
+      const total=principal+contribSum+interestSum;
+      const benefit=interestSum+contribSum;
+      const sum=MIRAE_MONTHS*(MIRAE_MONTHS+1)/2;
+      const rEff=miraePayMonthly>0?benefit/(miraePayMonthly*sum/12):0;
+      const rTaxAdj=rEff/(1-NORMAL_TAX_RATE);
+      html+=`<div class="rcard" data-amt="${total}"><span class="tag violet">환승 · 3년</span><h3>청년미래적금(2026) 환승</h3><div class="sub">${mt.label} · 적용금리 연 ${(rate*100).toFixed(1)}% · 월 ${won(miraePayMonthly)} 납입</div><div class="big-amt">${won(total)}</div><div class="breakdown"><div class="brow"><span class="k">납입 원금</span><span class="v">${won(principal)}</span></div><div class="brow violet"><span class="k">정부 기여금<span class="chip violet">${mt.type}</span></span><span class="v">${won(contribSum)}</span></div><div class="brow green"><span class="k">이자<span class="chip green">비과세</span></span><span class="v">${won(interestSum)}</span></div></div>${miraePayMonthly>0?`<div class="effect-box"><div class="eff-top">일반 과세적금 환산 수익률</div><div class="eff-num">연 ${(rTaxAdj*100).toFixed(1)}%</div><div class="eff-sub">기여금·비과세 혜택을 일반 적금(15.4% 과세)으로 환산한 효과</div></div>`:''}</div>`;
+    }
+  }
+
+  if(html.indexOf('rcard')!==-1){
+    html+=`<div class="result-note">추정치예요. 실제 수령액은 은행 약관·우대 요건·심사·정책 변동에 따라 달라질 수 있으니, 가입 전 공식 상품설명서를 꼭 확인하세요.</div>`;
+  }
+  document.getElementById('results').innerHTML=html;
+  highlightBest();
+  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function highlightBest(){
+  const cards=[...document.querySelectorAll('#results .rcard[data-amt]')];
+  if(cards.length<2)return;
+  let best=cards[0];
+  cards.forEach(c=>{if(+c.dataset.amt>+best.dataset.amt)best=c;});
+  best.classList.add('best');
+  const flag=document.createElement('div');flag.className='best-flag';
+  flag.textContent='★ 실수령액 기준 더 유리';
+  best.querySelector('.big-amt').after(flag);
+}
+</script>
+</body>
+</html>

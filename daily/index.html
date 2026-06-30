@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>퍼센트 계산기 · D-day 계산기 | 모든 계산기</title>
+  <link rel="canonical" href="https://moduncalc.com/daily/">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NX4JK10SS6');
+  </script>
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+  <!-- Pretendard Font -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  <link rel="stylesheet" href="/common/style.css">
+  <style>
+    .card{background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.07);padding:24px;margin-bottom:18px}
+    .card h3{font-size:1.08rem;font-weight:700;margin:0 0 16px;color:#1a1a1a}
+    .field{margin-bottom:14px}
+    .field label{display:block;font-size:.88rem;font-weight:600;color:#555;margin-bottom:6px}
+    .field input{width:100%;padding:12px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:1rem;font-family:inherit;box-sizing:border-box;transition:border-color .2s}
+    .field input:focus{outline:none;border-color:#4a6cf7}
+    .pct-hero{text-align:center;padding:16px 0 4px}
+    .pct-hero .pct-big{font-size:2.2rem;font-weight:800;color:#4a6cf7;line-height:1.2}
+    .pct-hero .pct-sub{font-size:.92rem;color:#777;margin-top:4px}
+    .cta-btn{width:100%;padding:15px;border:none;border-radius:12px;background:#4a6cf7;color:#fff;font-size:1.05rem;font-weight:700;font-family:inherit;cursor:pointer;margin-top:8px;transition:background .2s}
+    .cta-btn:hover{background:#3b5de7}
+    .cta-btn:active{background:#2f4ed6}
+    .dday-results{margin-top:18px}
+    .dday-results .pct-hero{background:#f6f8ff;border-radius:12px;padding:24px 16px}
+    .dday-detail{font-size:.93rem;color:#555;margin-top:10px;text-align:center;line-height:1.7}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <p id="headerEyebrow" class="eyebrow">간편 계산</p>
+      <h1 id="headerTitle">퍼센트 계산기</h1>
+      <p id="headerDesc">비율, 변화율, 할인율을 빠르게 계산해요.</p>
+    </header>
+
+    <nav class="tabs cols-2">
+      <button class="on" data-view="percent"><span class="t-ico">📊</span><span class="t-lbl">퍼센트</span></button>
+      <button data-view="dday"><span class="t-ico">📅</span><span class="t-lbl">D-day</span></button>
+    </nav>
+
+    <!-- Percent View -->
+    <section id="view-percent">
+      <div class="card">
+        <h3>A의 B%는 얼마?</h3>
+        <div class="field">
+          <label for="pctA">A</label>
+          <input type="number" id="pctA" value="10000" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="pctB">B (%)</label>
+          <input type="number" id="pctB" value="10" inputmode="decimal">
+        </div>
+        <div id="pctResult1" class="pct-hero">
+          <div class="pct-big">1,000</div>
+          <div class="pct-sub">10,000의 10%</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>A에서 B로 변화하면 몇 %?</h3>
+        <div class="field">
+          <label for="pctFrom">이전 값</label>
+          <input type="number" id="pctFrom" value="100" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="pctTo">이후 값</label>
+          <input type="number" id="pctTo" value="130" inputmode="decimal">
+        </div>
+        <div id="pctResult2" class="pct-hero">
+          <div class="pct-big">+30%</div>
+          <div class="pct-sub">30 증가</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>A는 B의 몇 %?</h3>
+        <div class="field">
+          <label for="pctPartA">A</label>
+          <input type="number" id="pctPartA" value="30" inputmode="decimal">
+        </div>
+        <div class="field">
+          <label for="pctPartB">B</label>
+          <input type="number" id="pctPartB" value="200" inputmode="decimal">
+        </div>
+        <div id="pctResult3" class="pct-hero">
+          <div class="pct-big">15%</div>
+          <div class="pct-sub">30은 200의 15%</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D-day View -->
+    <section id="view-dday" style="display:none">
+      <div class="card">
+        <h3>D-day 계산</h3>
+        <div class="field">
+          <label for="ddayDate">기준 날짜</label>
+          <input type="date" id="ddayDate">
+        </div>
+        <div class="field">
+          <label for="ddayTarget">목표 날짜</label>
+          <input type="date" id="ddayTarget">
+        </div>
+        <button class="cta-btn" id="ddayCta">D-day 계산하기</button>
+        <div id="ddayResults" class="dday-results"></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="/common/nav.js"></script>
+  <script>
+  (function(){
+    /* ── Tabs ── */
+    const tabs = document.querySelectorAll('.tabs button');
+    const views = {
+      percent: document.getElementById('view-percent'),
+      dday: document.getElementById('view-dday')
+    };
+    const meta = {
+      percent: { eyebrow:'간편 계산', title:'퍼센트 계산기', desc:'비율, 변화율, 할인율을 빠르게 계산해요.' },
+      dday:    { eyebrow:'날짜 계산', title:'D-day 계산기',  desc:'두 날짜 사이의 일수를 계산해요.' }
+    };
+
+    function switchTab(key){
+      tabs.forEach(t => t.classList.toggle('on', t.dataset.view === key));
+      Object.keys(views).forEach(k => views[k].style.display = k === key ? '' : 'none');
+      const m = meta[key];
+      document.getElementById('headerEyebrow').textContent = m.eyebrow;
+      document.getElementById('headerTitle').textContent = m.title;
+      document.getElementById('headerDesc').textContent = m.desc;
+    }
+    tabs.forEach(t => t.addEventListener('click', () => switchTab(t.dataset.view)));
+
+    /* ── Helpers ── */
+    function fmt(n){
+      if(n === null || isNaN(n)) return '—';
+      const abs = Math.abs(n);
+      if(abs === Infinity) return '∞';
+      if(Number.isInteger(n)) return n.toLocaleString('ko-KR');
+      return parseFloat(n.toFixed(4)).toLocaleString('ko-KR', {maximumFractionDigits:4});
+    }
+
+    /* ── Percent Card 1 ── */
+    const pctA = document.getElementById('pctA');
+    const pctB = document.getElementById('pctB');
+    function calcPct1(){
+      const a = parseFloat(pctA.value);
+      const b = parseFloat(pctB.value);
+      const r = document.getElementById('pctResult1');
+      if(isNaN(a)||isNaN(b)){r.innerHTML='<div class="pct-big">—</div>';return;}
+      const val = a * b / 100;
+      r.innerHTML = '<div class="pct-big">' + fmt(val) + '</div>'
+        + '<div class="pct-sub">' + fmt(a) + '의 ' + fmt(b) + '%</div>';
+    }
+    pctA.addEventListener('input', calcPct1);
+    pctB.addEventListener('input', calcPct1);
+
+    /* ── Percent Card 2 ── */
+    const pctFrom = document.getElementById('pctFrom');
+    const pctTo   = document.getElementById('pctTo');
+    function calcPct2(){
+      const a = parseFloat(pctFrom.value);
+      const b = parseFloat(pctTo.value);
+      const r = document.getElementById('pctResult2');
+      if(isNaN(a)||isNaN(b)||a===0){r.innerHTML='<div class="pct-big">—</div>';return;}
+      const change = ((b - a) / Math.abs(a)) * 100;
+      const diff = b - a;
+      const sign = change >= 0 ? '+' : '';
+      const word = diff > 0 ? '증가' : diff < 0 ? '감소' : '변화 없음';
+      r.innerHTML = '<div class="pct-big">' + sign + fmt(parseFloat(change.toFixed(4))) + '%</div>'
+        + '<div class="pct-sub">' + fmt(Math.abs(diff)) + ' ' + word + '</div>';
+    }
+    pctFrom.addEventListener('input', calcPct2);
+    pctTo.addEventListener('input', calcPct2);
+
+    /* ── Percent Card 3 ── */
+    const pctPartA = document.getElementById('pctPartA');
+    const pctPartB = document.getElementById('pctPartB');
+    function calcPct3(){
+      const a = parseFloat(pctPartA.value);
+      const b = parseFloat(pctPartB.value);
+      const r = document.getElementById('pctResult3');
+      if(isNaN(a)||isNaN(b)||b===0){r.innerHTML='<div class="pct-big">—</div>';return;}
+      const pct = (a / b) * 100;
+      r.innerHTML = '<div class="pct-big">' + fmt(parseFloat(pct.toFixed(4))) + '%</div>'
+        + '<div class="pct-sub">' + fmt(a) + '은(는) ' + fmt(b) + '의 ' + fmt(parseFloat(pct.toFixed(4))) + '%</div>';
+    }
+    pctPartA.addEventListener('input', calcPct3);
+    pctPartB.addEventListener('input', calcPct3);
+
+    /* ── D-day ── */
+    const ddayDate   = document.getElementById('ddayDate');
+    const ddayTarget = document.getElementById('ddayTarget');
+    const ddayCta    = document.getElementById('ddayCta');
+    const ddayResults= document.getElementById('ddayResults');
+
+    // Set default to today
+    const today = new Date();
+    ddayDate.value = today.toISOString().slice(0,10);
+
+    const dayNames = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+
+    function calcDday(){
+      const d1 = ddayDate.value;
+      const d2 = ddayTarget.value;
+      if(!d1||!d2){ddayResults.innerHTML='';return;}
+
+      const date1 = new Date(d1 + 'T00:00:00');
+      const date2 = new Date(d2 + 'T00:00:00');
+      const diffMs = date2.getTime() - date1.getTime();
+      const diffDays = Math.round(diffMs / (1000*60*60*24));
+      const absDays = Math.abs(diffDays);
+      const weeks = Math.floor(absDays / 7);
+      const remainDays = absDays % 7;
+      const targetDay = dayNames[date2.getDay()];
+
+      let label, prefix;
+      if(diffDays > 0){
+        label = 'D-' + diffDays;
+        prefix = '목표일까지';
+      } else if(diffDays < 0){
+        label = 'D+' + absDays;
+        prefix = '목표일로부터';
+      } else {
+        label = 'D-Day';
+        prefix = '오늘이';
+      }
+
+      let detail = '';
+      if(diffDays !== 0){
+        detail = prefix + ' <strong>' + absDays + '일</strong>';
+        if(weeks > 0){
+          detail += ' (' + weeks + '주';
+          if(remainDays > 0) detail += ' ' + remainDays + '일';
+          detail += ')';
+        }
+      } else {
+        detail = prefix + ' 바로 그 날이에요!';
+      }
+
+      ddayResults.innerHTML =
+        '<div class="pct-hero"><div class="pct-big">' + label + '</div></div>'
+        + '<div class="dday-detail">' + detail + '<br>목표일: ' + d2 + ' (' + targetDay + ')</div>';
+    }
+
+    ddayCta.addEventListener('click', calcDday);
+  })();
+  </script>
+</body>
+</html>
