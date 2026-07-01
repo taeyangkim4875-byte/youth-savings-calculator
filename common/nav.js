@@ -14,7 +14,9 @@
       {label:'도약 vs 미래 비교', hash:''}
     ]},
     {href:'/salary/',ico:'💰', label:'연봉/급여', sub:[
-      {label:'연봉 상위% · 실수령액', hash:''}
+      {label:'연봉 상위%', hash:'#salary'},
+      {label:'실수령액 표', hash:'#table'},
+      {label:'최저시급·주휴수당', hash:'#minimum'}
     ]},
     {href:'/pension/',ico:'👵', label:'연금/보험', sub:[
       {label:'실업급여', hash:'#jobless'},
