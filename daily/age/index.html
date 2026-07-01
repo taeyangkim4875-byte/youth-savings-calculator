@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>나이 계산기 - 만 나이·한국 나이·띠·별자리 | 모든 계산기</title>
+<meta name="description" content="만 나이, 한국 나이, 띠, 별자리를 알려드려요." />
+<link rel="canonical" href="https://moduncalc.com/daily/age/">
+<meta property="og:type" content="website" />
+<meta property="og:title" content="나이 계산기 - 만 나이·한국 나이·띠·별자리 | 모든 계산기" />
+<meta property="og:description" content="만 나이, 한국 나이, 띠, 별자리를 알려드려요." />
+<meta property="og:url" content="https://moduncalc.com/daily/age/" />
+<meta name="robots" content="index, follow" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+<style>
+  .live-result{background:var(--primary-weak);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+  .live-result .lr-big{font-size:28px;font-weight:800;color:var(--primary-dark);letter-spacing:-.5px}
+  .live-result .lr-sub{font-size:12px;color:var(--sub);margin-top:4px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid-2 .live-result{margin-top:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">나이 계산</div>
+    <h1>나이 계산기</h1>
+    <p>만 나이, 한국 나이, 띠, 별자리를 알려드려요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">🎂</span>만 나이 · 한국 나이 계산</h2>
+    <div class="field">
+      <label class="lbl">생년월일</label>
+      <div class="amt-row"><input type="date" id="ageBirth" style="flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;color:var(--ink)"></div>
+    </div>
+    <div class="grid-2">
+      <div class="live-result" id="ageR1"><div class="lr-big">—</div><div class="lr-sub">만 나이</div></div>
+      <div class="live-result" id="ageR2"><div class="lr-big">—</div><div class="lr-sub">한국 나이(연 나이)</div></div>
+    </div>
+    <div class="live-result" id="ageR3" style="margin-top:10px"><div class="lr-big">—</div><div class="lr-sub">다음 생일까지</div></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">🐲</span>띠 · 별자리</h2>
+    <div class="live-result" id="ageR4"><div class="lr-big">생년월일을 입력하세요</div><div class="lr-sub"></div></div>
+  </section>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+document.getElementById('ageBirth').addEventListener('change',function(){
+  var b=new Date(this.value+'T00:00:00'),now=new Date();
+  var manAge=now.getFullYear()-b.getFullYear();
+  if(now.getMonth()<b.getMonth()||(now.getMonth()===b.getMonth()&&now.getDate()<b.getDate()))manAge--;
+  var korAge=now.getFullYear()-b.getFullYear()+1;
+  document.getElementById('ageR1').innerHTML='<div class="lr-big">'+manAge+'\uc138</div><div class="lr-sub">\ub9cc \ub098\uc774 (\uad6d\uc81c \uae30\uc900)</div>';
+  document.getElementById('ageR2').innerHTML='<div class="lr-big">'+korAge+'\uc138</div><div class="lr-sub">\uc5f0 \ub098\uc774 (\ud55c\uad6d\uc2dd)</div>';
+  var nextBday=new Date(now.getFullYear(),b.getMonth(),b.getDate());
+  if(nextBday<=now) nextBday=new Date(now.getFullYear()+1,b.getMonth(),b.getDate());
+  var daysLeft=Math.ceil((nextBday-now)/(864e5));
+  document.getElementById('ageR3').innerHTML='<div class="lr-big">'+daysLeft+'\uc77c</div><div class="lr-sub">\ub2e4\uc74c \uc0dd\uc77c\uae4c\uc9c0 ('+nextBday.getFullYear()+'-'+String(nextBday.getMonth()+1).padStart(2,'0')+'-'+String(nextBday.getDate()).padStart(2,'0')+')</div>';
+  var animals=['\uc6d0\uc22d\uc774','\ub2ed','\uac1c','\ub3fc\uc9c0','\uc950','\uc18c','\ud638\ub791\uc774','\ud1a0\ub07c','\uc6a9','\ubf40','\ub9d0','\uc591'];
+  var animal=animals[b.getFullYear()%12];
+  var md=b.getMonth()*100+b.getDate();
+  var signs=[['\uc5fc\uc18c',119],['\ubb3c\ubcd1',218],['\ubb3c\uace0\uae30',320],['\uc591',419],['\ud669\uc18c',520],['\uc30d\ub465\uc774',620],['\uac8c',722],['\uc0ac\uc790',822],['\ucc98\ub140',922],['\ucc9c\uce6d',1022],['\uc804\uac08',1121],['\uc0ac\uc218',1221],['\uc5fc\uc18c',1231]];
+  var star='\uc5fc\uc18c';for(var i=0;i<signs.length;i++){if(md<=signs[i][1]){star=signs[i][0];break;}}
+  document.getElementById('ageR4').innerHTML='<div class="lr-big">'+animal+'\ub744 \xb7 '+star+'\uc790\ub9ac</div><div class="lr-sub">'+b.getFullYear()+'\ub144\uc0dd</div>';
+});
+})();
+</script>
+</body>
+</html>

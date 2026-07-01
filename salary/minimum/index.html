@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+
+<title>2026 최저시급 계산기 - 주휴수당·월급·연봉 환산 | 모든 계산기</title>
+<meta name="description" content="2026년 최저시급 10,320원 기준. 시급으로 일급, 주급, 월급, 연봉을 계산하고 주휴수당까지 한 번에 확인하세요.">
+<link rel="canonical" href="https://moduncalc.com/salary/minimum/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="2026 최저시급 계산기 - 주휴수당·월급·연봉 환산 | 모든 계산기">
+<meta property="og:description" content="2026년 최저시급 10,320원 기준. 시급으로 일급, 주급, 월급, 연봉을 계산하고 주휴수당까지 한 번에 확인하세요.">
+<meta property="og:url" content="https://moduncalc.com/salary/minimum/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">2026 최저임금 10,320원</div>
+    <h1>최저시급 계산기</h1>
+    <p>시급·근무시간으로 일급, 주급, 월급, 연봉, 주휴수당을 계산해요.</p>
+  </header>
+
+  <div class="card">
+    <div class="sec-title"><span class="num">1</span> 근무 조건 입력</div>
+    <div class="field">
+      <label class="lbl">시급</label>
+      <div class="amt-row">
+        <input type="number" id="minWage" value="10320" min="0">
+        <span class="unit">원</span>
+      </div>
+    </div>
+    <div class="field">
+      <label class="lbl">1일 근무시간</label>
+      <div class="amt-row">
+        <input type="number" id="minHours" value="8" min="1" max="12">
+        <span class="unit">시간</span>
+      </div>
+    </div>
+    <div class="field">
+      <label class="lbl">주 근무일수</label>
+      <div class="amt-row">
+        <input type="number" id="minDays" value="5" min="1" max="7">
+        <span class="unit">일</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="minResults"></div>
+
+  <footer>
+    <b>계산 가정</b><br>
+    · 2026년 최저시급: 10,320원 (월 환산 209시간 기준 2,156,880원)<br>
+    · 주휴수당: 주 15시간 이상 근무 시 지급<br>
+    · 주휴시간: (주 소정근로시간 / 40) × 8, 최대 8시간<br>
+    · 월 환산: (주 소정근로시간 + 주휴시간) × 365 / 7 / 12
+    <div class="disclaimer">이 계산기는 일반적인 기준에 따른 추정치이며, 실제 급여와 다를 수 있습니다.</div>
+  </footer>
+
+  <div class="cta-bar"><button class="cta" id="calcBtn">계산하기</button></div>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+/* ===== Minimum wage calc ===== */
+function calcMinimum(){
+  var wage=+(document.getElementById('minWage').value)||0;
+  var hours=Math.max(1,Math.min(12,+(document.getElementById('minHours').value)||8));
+  var days=Math.max(1,Math.min(7,+(document.getElementById('minDays').value)||5));
+
+  var weeklyHours=hours*days;
+  var hasWeeklyHoliday=weeklyHours>=15;
+  var weeklyHolidayHours=hasWeeklyHoliday?Math.min(8,(weeklyHours/40)*8):0;
+
+  var daily=wage*hours;
+  var weeklyHolidayPay=wage*weeklyHolidayHours;
+  var weekly=wage*weeklyHours+weeklyHolidayPay;
+  var monthlyConvertHours=(weeklyHours+weeklyHolidayHours)*(365/7/12);
+  var monthly=wage*monthlyConvertHours;
+  var yearly=monthly*12;
+  var monthlyHolidayTotal=wage*weeklyHolidayHours*(365/7/12);
+
+  var html='';
+
+  // Warning if below minimum
+  if(wage<10320 && wage>0){
+    html+='<div class="rcard" style="border-left:4px solid #e74c3c;background:#fff5f5"><div style="color:#e74c3c;font-weight:700">2026년 법정 최저시급(10,320원) 미만입니다</div></div>';
+  }
+
+  // Main result
+  html+='<div class="rcard best"><span class="tag green">월급 환산</span><div class="big-amt">'+won(monthly)+'<small>/월</small></div><div class="sub">시급 '+won(wage)+' · '+hours+'시간/일 · 주 '+days+'일 근무'+(hasWeeklyHoliday?' · 주휴수당 포함':'')+'</div></div>';
+
+  // Breakdown
+  html+='<div class="rcard"><span class="tag blue">급여 환산표</span><div class="breakdown"><div class="brow"><span class="k">시급</span><span class="v">'+won(wage)+'</span></div><div class="brow"><span class="k">일급</span><span class="v">'+won(daily)+'</span></div><div class="brow"><span class="k">주급'+(hasWeeklyHoliday?' (주휴 포함)':'')+'</span><span class="v">'+won(weekly)+'</span></div><div class="brow"><span class="k">월급'+(hasWeeklyHoliday?' (주휴 포함)':'')+'</span><span class="v">'+won(monthly)+'</span></div><div class="brow"><span class="k">연봉 환산</span><span class="v">'+won(yearly)+'</span></div></div></div>';
+
+  // Weekly holiday pay
+  if(hasWeeklyHoliday){
+    html+='<div class="rcard"><span class="tag">주휴수당</span><div class="breakdown"><div class="brow"><span class="k">주휴시간</span><span class="v">'+weeklyHolidayHours.toFixed(1)+'시간</span></div><div class="brow"><span class="k">주휴수당 (일액)</span><span class="v">'+won(weeklyHolidayPay)+'</span></div><div class="brow"><span class="k">월 주휴수당 총액</span><span class="v">'+won(monthlyHolidayTotal)+'</span></div></div></div>';
+  } else {
+    html+='<div class="rcard"><span class="tag">주휴수당</span><div class="sub">주 15시간 미만 근무 시 주휴수당이 지급되지 않습니다.</div></div>';
+  }
+
+  document.getElementById('minResults').innerHTML=html;
+  document.getElementById('minResults').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+document.getElementById('calcBtn').addEventListener('click', calcMinimum);
+</script>
+</body>
+</html>

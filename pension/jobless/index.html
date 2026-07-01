@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+
+  <title>2026 실업급여 계산기 - 구직급여 예상 수령액 | 모든 계산기</title>
+  <meta name="description" content="2026년 기준 실업급여(구직급여) 1일액, 소정급여일수, 총 수령액을 계산하세요. 상한 68,100원·하한 66,048원 자동 반영." />
+  <link rel="canonical" href="https://moduncalc.com/pension/jobless/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="2026 실업급여 계산기 - 구직급여 예상 수령액 | 모든 계산기" />
+  <meta property="og:description" content="2026년 기준 실업급여(구직급여) 1일액, 소정급여일수, 총 수령액을 계산하세요. 상한 68,100원·하한 66,048원 자동 반영." />
+  <meta property="og:url" content="https://moduncalc.com/pension/jobless/" />
+
+  <meta name="robots" content="index, follow" />
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" />
+
+  <link rel="stylesheet" href="/common/style.css" />
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">2026 고용보험 기준</div>
+    <h1>실업급여 계산기</h1>
+    <p>퇴사 후 받을 구직급여 1일액과 총 지급액을 미리 계산해 드려요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">1</span>퇴사·고용보험 정보</h2>
+    <div class="field">
+      <label class="lbl">퇴사 당시 나이 <span class="hint">만 나이 · 50세 기준 지급일수 달라져요</span></label>
+      <div class="amt-row"><input type="number" id="jbAge" value="35" min="15" max="64" step="1" inputmode="numeric" /><span class="unit">세</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">퇴사 전 월 평균임금 <span class="hint">세전 · 최근 3개월 평균 · 만원 단위</span></label>
+      <div class="amt-row"><input type="number" id="jbWage" value="300" min="0" step="10" inputmode="numeric" /><span class="unit">만원/월</span></div>
+      <input type="range" id="jbWageRange" min="0" max="1000" step="10" value="300" />
+      <div class="range-val">월 <b id="jbWageLabel">300만원</b> · 상여·수당 포함 세전 평균</div>
+    </div>
+    <div class="field">
+      <label class="lbl">고용보험 가입기간 <span class="hint">총 피보험 단위기간</span></label>
+      <select id="jbYears">
+        <option value="0.5">1년 미만</option>
+        <option value="2" selected>1년 이상 ~ 3년 미만</option>
+        <option value="4">3년 이상 ~ 5년 미만</option>
+        <option value="7">5년 이상 ~ 10년 미만</option>
+        <option value="12">10년 이상</option>
+      </select>
+      <div class="note">이직일 이전 18개월 중 피보험 단위기간이 <b>180일 이상</b>이어야 수급 자격이 생겨요.</div>
+    </div>
+  </section>
+  <div id="joblessResults"><div class="card empty">버튼을 누르면 예상 구직급여 일액·지급일수·총액을 알려드려요.</div></div>
+  <section class="card">
+    <div class="tbl-cap">📋 소정급여일수 <span style="font-weight:600;color:var(--sub);font-size:11px">(고용보험법 별표1)</span></div>
+    <table class="dtable" id="tblJobless">
+      <thead><tr><th>가입기간</th><th>50세 미만</th><th>50세↑·장애</th></tr></thead>
+      <tbody>
+        <tr data-ylo="0" data-yhi="1"><td>1년 미만</td><td>120일</td><td>120일</td></tr>
+        <tr data-ylo="1" data-yhi="3"><td>1~3년</td><td>150일</td><td>180일</td></tr>
+        <tr data-ylo="3" data-yhi="5"><td>3~5년</td><td>180일</td><td>210일</td></tr>
+        <tr data-ylo="5" data-yhi="10"><td>5~10년</td><td>210일</td><td>240일</td></tr>
+        <tr data-ylo="10" data-yhi="99"><td>10년 이상</td><td>240일</td><td>270일</td></tr>
+      </tbody>
+    </table>
+    <div class="tbl-src">2026년 기준 · 1일 상한 <b>68,100원</b> · 하한 <b>66,048원</b></div>
+  </section>
+  <footer>
+    <b>계산 가정 안내</b><br>
+    · 구직급여 1일액 = 퇴사 전 평균임금 × 60%이며, 상한 68,100원·하한 66,048원으로 조정됩니다.<br>
+    · 7일 대기기간 이후 지급되며, 총 예상액 = 1일액 × 소정급여일수입니다.
+    <div class="disclaimer">본 계산기는 <b>참고용 추정 도구</b>입니다. 정확한 내용은 <b>고용24(work24.go.kr)</b>에서 확인하세요.</div>
+  </footer>
+
+  <div class="cta-bar"><button class="cta" id="calcBtn">구직급여 계산하기</button></div>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+const JB_RATE=0.60,JB_UPPER=68100,JB_LOWER=66048,JB_WAIT=7;
+function joblessDays(years,age){
+  const old=age>=50;
+  if(years<1)return 120;if(years<3)return old?180:150;
+  if(years<5)return old?210:180;if(years<10)return old?240:210;
+  return old?270:240;
+}
+const jb={age:35,wage:300,years:2};
+document.getElementById('jbAge').addEventListener('input',e=>jb.age=Math.max(15,Math.min(64,+e.target.value||0)));
+const jbWage=document.getElementById('jbWage'),jbWageRange=document.getElementById('jbWageRange');
+function syncJbWage(v){v=Math.max(0,v|0);jb.wage=v;jbWage.value=v;jbWageRange.value=Math.min(1000,v);document.getElementById('jbWageLabel').textContent=v.toLocaleString('ko-KR')+'만원';}
+jbWage.addEventListener('input',e=>syncJbWage(+e.target.value||0));
+jbWageRange.addEventListener('input',e=>syncJbWage(+e.target.value));
+document.getElementById('jbYears').addEventListener('change',e=>jb.years=+e.target.value);
+
+document.getElementById('calcBtn').addEventListener('click',calcJobless);
+
+function calcJobless(){
+  const wageMonthly=jb.wage*10000,dailyAvg=wageMonthly/30.4,raw=dailyAvg*JB_RATE;
+  const daily=Math.round(Math.min(Math.max(raw,JB_LOWER),JB_UPPER));
+  const days=joblessDays(jb.years,jb.age),total=daily*days,monthsApprox=days/30;
+  let cap='';
+  if(raw>JB_UPPER)cap='<span class="chip violet">상한 적용</span>';
+  else if(raw<JB_LOWER)cap='<span class="chip green">하한 적용</span>';
+  let html='<div class="result-head">예상 구직급여</div>';
+  html+=`<div class="rcard best"><span class="tag blue">${jb.age>=50?'50세 이상':'50세 미만'} · 가입 ${jb.years<1?'1년 미만':jb.years+'년'}</span><div class="pct-hero"><div class="pct-top">예상 총 수령액</div><div class="pct-big">${won(total)}</div><div class="pct-sub">1일 ${won(daily)} × ${days}일 (약 ${monthsApprox.toFixed(1)}개월)</div></div><div class="breakdown"><div class="brow"><span class="k">1일 구직급여 ${cap}</span><span class="v">${won(daily)}</span></div><div class="brow"><span class="k">소정급여일수</span><span class="v">${days}일</span></div><div class="brow"><span class="k">평균임금(추정 일액)</span><span class="v">${won(dailyAvg)}/일</span></div><div class="brow"><span class="k">대기기간</span><span class="v">${JB_WAIT}일(미지급)</span></div><div class="brow"><span class="k" style="font-weight:800">총 예상액</span><span class="v" style="font-weight:800">${won(total)}</span></div></div><div class="effect-box"><div class="eff-top">월 환산 시</div><div class="eff-num">약 ${won(daily*30)}/월</div><div class="eff-sub">1일액 × 30일 기준</div></div></div>`;
+  html+=`<div class="result-note">상·하한과 60% 산정률을 적용한 추정이에요.</div>`;
+  document.getElementById('joblessResults').innerHTML=html;
+  document.querySelectorAll('#tblJobless tbody tr').forEach(tr=>{
+    const lo=+tr.dataset.ylo,hi=+tr.dataset.yhi;
+    tr.classList.toggle('hl',jb.years>=lo&&jb.years<hi);
+  });
+  document.getElementById('joblessResults').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

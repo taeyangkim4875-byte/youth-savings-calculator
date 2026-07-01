@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>퍼센트 계산기 - 비율·변화율·할인율 계산 | 모든 계산기</title>
+<meta name="description" content="A의 B%는 얼마인지, 변화율, A는 B의 몇 퍼센트인지 빠르게 계산해요." />
+<link rel="canonical" href="https://moduncalc.com/daily/percent/">
+<meta property="og:type" content="website" />
+<meta property="og:title" content="퍼센트 계산기 - 비율·변화율·할인율 계산 | 모든 계산기" />
+<meta property="og:description" content="A의 B%는 얼마인지, 변화율, A는 B의 몇 퍼센트인지 빠르게 계산해요." />
+<meta property="og:url" content="https://moduncalc.com/daily/percent/" />
+<meta name="robots" content="index, follow" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+<style>
+  .live-result{background:var(--primary-weak);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+  .live-result .lr-big{font-size:28px;font-weight:800;color:var(--primary-dark);letter-spacing:-.5px}
+  .live-result .lr-sub{font-size:12px;color:var(--sub);margin-top:4px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">간편 계산</div>
+    <h1>퍼센트 계산기</h1>
+    <p>비율, 변화율, 할인율을 빠르게 계산해요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">1</span>A의 B%는?</h2>
+    <div class="field">
+      <label class="lbl">값 A</label>
+      <div class="amt-row"><input type="number" id="pctA" value="10000" inputmode="decimal"><span class="unit"></span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">비율 B</label>
+      <div class="amt-row"><input type="number" id="pctB" value="10" inputmode="decimal"><span class="unit">%</span></div>
+    </div>
+    <div class="live-result" id="pctR1"><div class="lr-big">1,000</div><div class="lr-sub">10,000의 10%</div></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">2</span>변화율 계산</h2>
+    <div class="field">
+      <label class="lbl">이전 값</label>
+      <div class="amt-row"><input type="number" id="pctFrom" value="100" inputmode="decimal"><span class="unit"></span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">이후 값</label>
+      <div class="amt-row"><input type="number" id="pctTo" value="130" inputmode="decimal"><span class="unit"></span></div>
+    </div>
+    <div class="live-result" id="pctR2"><div class="lr-big">+30%</div><div class="lr-sub">30 증가</div></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">3</span>A는 B의 몇 %?</h2>
+    <div class="field">
+      <label class="lbl">부분 값 A</label>
+      <div class="amt-row"><input type="number" id="pctPartA" value="30" inputmode="decimal"><span class="unit"></span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">전체 값 B</label>
+      <div class="amt-row"><input type="number" id="pctPartB" value="200" inputmode="decimal"><span class="unit"></span></div>
+    </div>
+    <div class="live-result" id="pctR3"><div class="lr-big">15%</div><div class="lr-sub">30은 200의 15%</div></div>
+  </section>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+var fmt = function(n){
+  if(n===null||isNaN(n)) return '\u2014';
+  var a=Math.abs(n);
+  if(a===Infinity) return '\u221e';
+  if(a>=1) return parseFloat(n.toFixed(2)).toLocaleString('ko-KR');
+  return parseFloat(n.toFixed(4)).toLocaleString('ko-KR',{maximumFractionDigits:4});
+};
+
+function livePct1(){
+  var a=+document.getElementById('pctA').value,b=+document.getElementById('pctB').value;
+  var r=a*b/100;
+  document.getElementById('pctR1').innerHTML='<div class="lr-big">'+fmt(r)+'</div><div class="lr-sub">'+fmt(a)+'\uc758 '+fmt(b)+'%</div>';
+}
+function livePct2(){
+  var a=+document.getElementById('pctFrom').value,b=+document.getElementById('pctTo').value;
+  if(!a){document.getElementById('pctR2').innerHTML='<div class="lr-big">\u2014</div>';return;}
+  var p=((b-a)/Math.abs(a))*100,d=b-a;
+  document.getElementById('pctR2').innerHTML='<div class="lr-big">'+(p>=0?'+':'')+fmt(p)+'%</div><div class="lr-sub">'+fmt(Math.abs(d))+' '+(d>=0?'\uc99d\uac00':'\uac10\uc18c')+'</div>';
+}
+function livePct3(){
+  var a=+document.getElementById('pctPartA').value,b=+document.getElementById('pctPartB').value;
+  if(!b){document.getElementById('pctR3').innerHTML='<div class="lr-big">\u2014</div>';return;}
+  var p=(a/b)*100;
+  document.getElementById('pctR3').innerHTML='<div class="lr-big">'+fmt(p)+'%</div><div class="lr-sub">'+fmt(a)+'\uc740(\ub294) '+fmt(b)+'\uc758 '+fmt(p)+'%</div>';
+}
+['pctA','pctB'].forEach(function(id){document.getElementById(id).addEventListener('input',livePct1);});
+['pctFrom','pctTo'].forEach(function(id){document.getElementById(id).addEventListener('input',livePct2);});
+['pctPartA','pctPartB'].forEach(function(id){document.getElementById(id).addEventListener('input',livePct3);});
+})();
+</script>
+</body>
+</html>

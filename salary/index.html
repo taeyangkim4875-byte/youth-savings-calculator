@@ -11,8 +11,8 @@
 <!-- AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
 
-<title>연봉 실수령액 계산기 · 실수령액 표 · 최저시급 | 모든 계산기</title>
-<meta name="description" content="2026 연봉 실수령액 표, 최저시급 계산기, 주휴수당까지 한 번에. 4대보험·소득세 자동 반영으로 내 연봉 상위 %와 실수령액을 확인하세요.">
+<title>연봉 실수령액 계산기 - 연봉 상위% · 실수령액 | 모든 계산기</title>
+<meta name="description" content="내 연봉이 상위 몇 %인지, 세후 실수령액은 얼마인지 한 번에 계산하세요. 2026 4대보험·소득세 자동 반영.">
 <link rel="canonical" href="https://moduncalc.com/salary/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="연봉 실수령액 계산기 · 실수령액 표 · 최저시급 | 모든 계산기">
@@ -32,13 +32,7 @@
     <p id="headerDesc">연봉이 상위 몇 %인지, 실수령액은 얼마인지 알려드려요.</p>
   </header>
 
-  <nav class="tabs cols-3" id="tabs">
-    <button class="tab on" data-tab="salary">📊 연봉상위%</button>
-    <button class="tab" data-tab="table">📋 실수령액표</button>
-    <button class="tab" data-tab="minimum">💰 최저시급</button>
-  </nav>
-
-  <!-- ===== VIEW 1: 연봉 상위% ===== -->
+  <!-- ===== 연봉 상위% ===== -->
   <div id="view-salary">
     <div class="card">
       <div class="sec-title"><span class="num">1</span> 내 정보 입력</div>
@@ -163,114 +157,11 @@
     </footer>
   </div>
 
-  <!-- ===== VIEW 2: 실수령액 표 ===== -->
-  <div id="view-table" hidden>
-    <div class="card" style="padding:16px 14px">
-      <p style="font-size:12px;color:var(--sub);text-align:center;margin:0 0 12px">각 행을 터치하면 상세 공제 내역을 볼 수 있어요</p>
-      <table class="dtable" id="netPayTable" style="font-size:14px">
-        <thead>
-          <tr><th style="text-align:left">연봉(세전)</th><th>공제 합계</th><th>월 실수령액</th></tr>
-        </thead>
-        <tbody id="netPayTableBody"></tbody>
-      </table>
-    </div>
-    <p class="tbl-src" style="text-align:center;padding:0 16px">부양가족 1명(본인), 비과세 식대 월 20만원 기준 · 2026년 4대보험 요율 적용</p>
-
-    <footer>
-      <b>계산 가정</b><br>
-      · 국민연금 4.75% (상한 637만) · 건강 3.595% · 장기요양 13.14% · 고용 0.9%<br>
-      · 소득세: 간이세액 기준 · 식대 비과세 월 20만원
-      <div class="disclaimer">이 표는 일반적인 요율 기준 추정치이며, 실제 급여와 다를 수 있습니다.</div>
-    </footer>
-  </div>
-
-  <!-- ===== VIEW 3: 최저시급 ===== -->
-  <div id="view-minimum" hidden>
-    <div class="card">
-      <div class="sec-title"><span class="num">1</span> 근무 조건 입력</div>
-
-      <div class="field">
-        <label class="lbl">시급</label>
-        <div class="amt-row">
-          <input type="number" id="minWage" value="10320" min="0">
-          <span class="unit">원</span>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="lbl">1일 근무시간</label>
-        <div class="amt-row">
-          <input type="number" id="minHours" value="8" min="1" max="12">
-          <span class="unit">시간</span>
-        </div>
-      </div>
-
-      <div class="field">
-        <label class="lbl">주 근무일수</label>
-        <div class="amt-row">
-          <input type="number" id="minDays" value="5" min="1" max="7">
-          <span class="unit">일</span>
-        </div>
-      </div>
-    </div>
-
-    <div id="minResults"></div>
-
-    <footer>
-      <b>계산 가정</b><br>
-      · 2026년 최저시급: 10,320원 (월 환산 209시간 기준 2,156,880원)<br>
-      · 주휴수당: 주 15시간 이상 근무 시 지급<br>
-      · 주휴시간: (주 소정근로시간 / 40) × 8, 최대 8시간<br>
-      · 월 환산: (주 소정근로시간 + 주휴시간) × 365 / 7 / 12
-
-      <div class="disclaimer">
-        <b>면책 안내</b><br>
-        이 계산기는 일반적인 기준에 따른 추정치이며, 실제 급여와 다를 수 있습니다.
-      </div>
-    </footer>
-  </div>
-
   <div class="cta-bar"><button class="cta" id="calcBtn">상위 % · 실수령 계산하기</button></div>
 </div>
 
 <script src="/common/nav.js"></script>
 <script>
-/* ===== Tab switching ===== */
-var TAB_META = {
-  salary: {eyebrow:'2026 4대보험 · 소득세 기준', title:'내 연봉 상위 %', desc:'연봉이 상위 몇 %인지, 실수령액은 얼마인지 알려드려요.', cta:'상위 % · 실수령 계산하기'},
-  table: {eyebrow:'2026 4대보험 기준 · 부양가족 1명', title:'연봉 실수령액 표', desc:'연봉 2,000만~1억 5,000만원까지 실수령액을 한눈에 비교하세요.', cta:''},
-  minimum: {eyebrow:'2026 최저임금 10,320원', title:'최저시급 계산기', desc:'시급·근무시간으로 일급, 주급, 월급, 연봉, 주휴수당을 계산해요.', cta:'계산하기'}
-};
-
-var currentTab = 'salary';
-var ctaBar = document.querySelector('.cta-bar');
-var calcBtn = document.getElementById('calcBtn');
-
-document.getElementById('tabs').addEventListener('click', function(e){
-  var btn = e.target.closest('.tab');
-  if(!btn) return;
-  var tab = btn.dataset.tab;
-  if(tab === currentTab) return;
-  currentTab = tab;
-
-  document.querySelectorAll('#tabs .tab').forEach(function(t){ t.classList.toggle('on', t.dataset.tab === tab); });
-  document.getElementById('view-salary').hidden = tab !== 'salary';
-  document.getElementById('view-table').hidden = tab !== 'table';
-  document.getElementById('view-minimum').hidden = tab !== 'minimum';
-
-  var meta = TAB_META[tab];
-  document.getElementById('headerEyebrow').textContent = meta.eyebrow;
-  document.getElementById('headerTitle').textContent = meta.title;
-  document.getElementById('headerDesc').textContent = meta.desc;
-
-  if(meta.cta){
-    ctaBar.style.display = '';
-    calcBtn.textContent = meta.cta;
-  } else {
-    ctaBar.style.display = 'none';
-  }
-});
-
 /* ===== Shared functions ===== */
 function netPay(grossMan, dependents, useNontax){
   var gross = grossMan * 10000;
@@ -422,125 +313,8 @@ function calcSalary(){
   document.getElementById('salaryResults').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-/* ===== VIEW 2: Net pay table (3열 + 클릭 펼치기) ===== */
-(function(){
-  // 2000~6000: 100만 단위, 6000~10000: 200만 단위, 10000~15000: 500만 단위
-  var salaries=[];
-  for(var i=2000;i<=6000;i+=100) salaries.push(i);
-  for(var i=6200;i<=10000;i+=200) salaries.push(i);
-  for(var i=10500;i<=15000;i+=500) salaries.push(i);
-
-  var tbody=document.getElementById('netPayTableBody');
-  var fmtMan=function(v){return Math.round(v/10000).toLocaleString('ko-KR')+'만';};
-  // 연봉 표시: 1억 이상은 "1억 ~만" 형식
-  var fmtSalary=function(s){
-    if(s>=10000){
-      var uk=Math.floor(s/10000);
-      var rest=s%10000;
-      return rest>0? uk+'억 '+rest.toLocaleString('ko-KR')+'만' : uk+'억';
-    }
-    return s.toLocaleString('ko-KR')+'만';
-  };
-
-  // 연령대별 평균 연봉 (통계청 2024 월평균×12, 만원)
-  // 출처: 국세청 2023 귀속(중위·평균), 통계청 2024.12(연령대별)
-  var landmarks={
-    2600:'최저임금 연봉(약 2,588만)',
-    3300:'20대 평균(271만/월)',
-    4300:'전체 중위(4,272만)',
-    4800:'30대 평균(397만/월)',
-    5400:'50대 평균(445만/월)',
-    5500:'전체 평균(5,482만)',
-    5600:'40대 평균(469만/월)'
-  };
-
-  salaries.forEach(function(s){
-    var net=netPay(s,1,true);
-    var deductMonth=net.deductMonth;
-    var label=landmarks[s]||null;
-
-    // 메인 행
-    var tr=document.createElement('tr');
-    tr.style.cursor='pointer';
-    if(label) tr.className='hl';
-    var salaryText=fmtSalary(s);
-    if(label) salaryText+='<div style="font-size:10px;font-weight:700;color:var(--primary);margin-top:2px">'+label+'</div>';
-    tr.innerHTML='<td style="text-align:left;font-weight:800">'+salaryText+'</td>'
-      +'<td style="color:var(--sub)">-'+fmtMan(deductMonth)+'</td>'
-      +'<td style="font-weight:800;color:var(--primary-dark)">'+fmtMan(net.netMonth)+'</td>';
-
-    // 상세 행 (숨김)
-    var detail=document.createElement('tr');
-    detail.style.display='none';
-    detail.innerHTML='<td colspan="3" style="padding:12px 10px;background:var(--bg);border-radius:0">'
-      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:12px">'
-      +'<div style="color:var(--sub)">월급(세전)</div><div style="font-weight:700;text-align:right">'+won(s*10000/12)+'</div>'
-      +'<div style="color:var(--sub)">국민연금</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won(net.np/12)+'</div>'
-      +'<div style="color:var(--sub)">건강+장기요양</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won(net.hi/12)+'</div>'
-      +'<div style="color:var(--sub)">고용보험</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won(net.ei/12)+'</div>'
-      +'<div style="color:var(--sub)">소득세+지방세</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won((net.incomeTax+net.localTax)/12)+'</div>'
-      +'<div style="font-weight:800;border-top:1px solid var(--line);padding-top:6px">공제 합계</div><div style="font-weight:800;text-align:right;border-top:1px solid var(--line);padding-top:6px;color:#E5484D">-'+won(deductMonth)+'</div>'
-      +'<div style="font-weight:800">월 실수령액</div><div style="font-weight:800;text-align:right;color:var(--primary-dark)">'+won(net.netMonth)+'</div>'
-      +'<div style="font-weight:800">연 실수령액</div><div style="font-weight:800;text-align:right;color:var(--primary-dark)">'+won(net.netYear)+'</div>'
-      +'</div></td>';
-
-    tr.addEventListener('click',function(){
-      var isOpen=detail.style.display!=='none';
-      detail.style.display=isOpen?'none':'table-row';
-    });
-
-    tbody.appendChild(tr);
-    tbody.appendChild(detail);
-  });
-})();
-
-/* ===== VIEW 3: Minimum wage calc ===== */
-function calcMinimum(){
-  var wage=+(document.getElementById('minWage').value)||0;
-  var hours=Math.max(1,Math.min(12,+(document.getElementById('minHours').value)||8));
-  var days=Math.max(1,Math.min(7,+(document.getElementById('minDays').value)||5));
-
-  var weeklyHours=hours*days;
-  var hasWeeklyHoliday=weeklyHours>=15;
-  var weeklyHolidayHours=hasWeeklyHoliday?Math.min(8,(weeklyHours/40)*8):0;
-
-  var daily=wage*hours;
-  var weeklyHolidayPay=wage*weeklyHolidayHours;
-  var weekly=wage*weeklyHours+weeklyHolidayPay;
-  var monthlyConvertHours=(weeklyHours+weeklyHolidayHours)*(365/7/12);
-  var monthly=wage*monthlyConvertHours;
-  var yearly=monthly*12;
-  var monthlyHolidayTotal=wage*weeklyHolidayHours*(365/7/12);
-
-  var html='';
-
-  // Warning if below minimum
-  if(wage<10320 && wage>0){
-    html+='<div class="rcard" style="border-left:4px solid #e74c3c;background:#fff5f5"><div style="color:#e74c3c;font-weight:700">2026년 법정 최저시급(10,320원) 미만입니다</div></div>';
-  }
-
-  // Main result
-  html+='<div class="rcard best"><span class="tag green">월급 환산</span><div class="big-amt">'+won(monthly)+'<small>/월</small></div><div class="sub">시급 '+won(wage)+' · '+hours+'시간/일 · 주 '+days+'일 근무'+(hasWeeklyHoliday?' · 주휴수당 포함':'')+'</div></div>';
-
-  // Breakdown
-  html+='<div class="rcard"><span class="tag blue">급여 환산표</span><div class="breakdown"><div class="brow"><span class="k">시급</span><span class="v">'+won(wage)+'</span></div><div class="brow"><span class="k">일급</span><span class="v">'+won(daily)+'</span></div><div class="brow"><span class="k">주급'+(hasWeeklyHoliday?' (주휴 포함)':'')+'</span><span class="v">'+won(weekly)+'</span></div><div class="brow"><span class="k">월급'+(hasWeeklyHoliday?' (주휴 포함)':'')+'</span><span class="v">'+won(monthly)+'</span></div><div class="brow"><span class="k">연봉 환산</span><span class="v">'+won(yearly)+'</span></div></div></div>';
-
-  // Weekly holiday pay
-  if(hasWeeklyHoliday){
-    html+='<div class="rcard"><span class="tag">주휴수당</span><div class="breakdown"><div class="brow"><span class="k">주휴시간</span><span class="v">'+weeklyHolidayHours.toFixed(1)+'시간</span></div><div class="brow"><span class="k">주휴수당 (일액)</span><span class="v">'+won(weeklyHolidayPay)+'</span></div><div class="brow"><span class="k">월 주휴수당 총액</span><span class="v">'+won(monthlyHolidayTotal)+'</span></div></div></div>';
-  } else {
-    html+='<div class="rcard"><span class="tag">주휴수당</span><div class="sub">주 15시간 미만 근무 시 주휴수당이 지급되지 않습니다.</div></div>';
-  }
-
-  document.getElementById('minResults').innerHTML=html;
-  document.getElementById('minResults').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
 /* ===== CTA button handler ===== */
-calcBtn.addEventListener('click', function(){
-  if(currentTab==='salary') calcSalary();
-  else if(currentTab==='minimum') calcMinimum();
-});
+document.getElementById('calcBtn').addEventListener('click', calcSalary);
 </script>
 </body>
 </html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>속도·시간 계산기 - 거리÷속도 소요시간 | 모든 계산기</title>
+<meta name="description" content="거리와 속도로 소요 시간을 계산해요." />
+<link rel="canonical" href="https://moduncalc.com/daily/speed/">
+<meta property="og:type" content="website" />
+<meta property="og:title" content="속도·시간 계산기 - 거리÷속도 소요시간 | 모든 계산기" />
+<meta property="og:description" content="거리와 속도로 소요 시간을 계산해요." />
+<meta property="og:url" content="https://moduncalc.com/daily/speed/" />
+<meta name="robots" content="index, follow" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+<style>
+  .live-result{background:var(--primary-weak);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+  .live-result .lr-big{font-size:28px;font-weight:800;color:var(--primary-dark);letter-spacing:-.5px}
+  .live-result .lr-sub{font-size:12px;color:var(--sub);margin-top:4px}
+  .unit-row{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+  .unit-row input{flex:1;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font-size:16px;font-weight:700;
+    color:var(--ink);font-family:inherit;outline:none;background:#fff}
+  .unit-row input:focus{border-color:var(--primary)}
+  .unit-row .u-label{font-size:13px;font-weight:700;color:var(--sub);width:36px;text-align:center;flex:none}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid-2 .live-result{margin-top:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">이동 계산</div>
+    <h1>속도·시간 계산기</h1>
+    <p>거리와 속도로 소요 시간을 계산해요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">🚗</span>속도 · 거리 · 시간</h2>
+    <div class="field">
+      <label class="lbl">거리</label>
+      <div class="amt-row"><input type="number" id="spdDist" value="300" inputmode="decimal"><span class="unit">km</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">속도</label>
+      <div class="amt-row"><input type="number" id="spdSpeed" value="100" inputmode="decimal"><span class="unit">km/h</span></div>
+    </div>
+    <div class="live-result" id="spdR"><div class="lr-big">3시간 0분</div><div class="lr-sub">예상 소요 시간</div></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">🏃</span>속도 단위 변환</h2>
+    <div class="unit-row"><input type="number" id="spdConv" value="100" inputmode="decimal"><span class="u-label">km/h</span></div>
+    <div class="grid-2">
+      <div class="live-result" id="spdMs"><div class="lr-big">27.78</div><div class="lr-sub">m/s</div></div>
+      <div class="live-result" id="spdMph"><div class="lr-big">62.14</div><div class="lr-sub">mph</div></div>
+    </div>
+  </section>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+var fmt = function(n){
+  if(n===null||isNaN(n)) return '\u2014';
+  var a=Math.abs(n);
+  if(a===Infinity) return '\u221e';
+  if(a>=1) return parseFloat(n.toFixed(2)).toLocaleString('ko-KR');
+  return parseFloat(n.toFixed(4)).toLocaleString('ko-KR',{maximumFractionDigits:4});
+};
+
+function liveSpeed(){
+  var d=+document.getElementById('spdDist').value,s=+document.getElementById('spdSpeed').value;
+  if(!s){document.getElementById('spdR').innerHTML='<div class="lr-big">\u2014</div>';return;}
+  var h=d/s,hr=Math.floor(h),mn=Math.round((h-hr)*60);
+  document.getElementById('spdR').innerHTML='<div class="lr-big">'+hr+'\uc2dc\uac04 '+mn+'\ubd84</div><div class="lr-sub">'+fmt(d)+'km \xf7 '+fmt(s)+'km/h</div>';
+}
+['spdDist','spdSpeed'].forEach(function(id){document.getElementById(id).addEventListener('input',liveSpeed);});
+document.getElementById('spdConv').addEventListener('input',function(){
+  var v=+this.value||0;
+  document.getElementById('spdMs').querySelector('.lr-big').textContent=fmt(v/3.6);
+  document.getElementById('spdMph').querySelector('.lr-big').textContent=fmt(v*0.621371);
+});
+})();
+</script>
+</body>
+</html>

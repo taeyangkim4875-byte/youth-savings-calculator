@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>연비 계산기 - 자동차 연비·주유비 계산 | 모든 계산기</title>
+<meta name="description" content="실제 연비와 여행 유류비를 계산해요." />
+<link rel="canonical" href="https://moduncalc.com/daily/fuel/">
+<meta property="og:type" content="website" />
+<meta property="og:title" content="연비 계산기 - 자동차 연비·주유비 계산 | 모든 계산기" />
+<meta property="og:description" content="실제 연비와 여행 유류비를 계산해요." />
+<meta property="og:url" content="https://moduncalc.com/daily/fuel/" />
+<meta name="robots" content="index, follow" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+<style>
+  .live-result{background:var(--primary-weak);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+  .live-result .lr-big{font-size:28px;font-weight:800;color:var(--primary-dark);letter-spacing:-.5px}
+  .live-result .lr-sub{font-size:12px;color:var(--sub);margin-top:4px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid-2 .live-result{margin-top:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">자동차</div>
+    <h1>연비 계산기</h1>
+    <p>실제 연비와 여행 유류비를 계산해요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">⛽</span>자동차 연비 계산</h2>
+    <div class="field">
+      <label class="lbl">주행 거리</label>
+      <div class="amt-row"><input type="number" id="fuelDist" value="500" inputmode="decimal"><span class="unit">km</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">주유량</label>
+      <div class="amt-row"><input type="number" id="fuelLiter" value="45" inputmode="decimal"><span class="unit">L</span></div>
+    </div>
+    <div class="live-result" id="fuelR1"><div class="lr-big">11.1 km/L</div><div class="lr-sub">실제 연비</div></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">💰</span>주유비 · 여행 유류비</h2>
+    <div class="field">
+      <label class="lbl">주행 거리</label>
+      <div class="amt-row"><input type="number" id="fuelTripDist" value="300" inputmode="decimal"><span class="unit">km</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">차량 연비</label>
+      <div class="amt-row"><input type="number" id="fuelTripEff" value="12" inputmode="decimal"><span class="unit">km/L</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">유가 (리터당)</label>
+      <div class="amt-row"><input type="number" id="fuelTripPrice" value="1650" inputmode="numeric"><span class="unit">원/L</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="live-result" id="fuelR2"><div class="lr-big">25.0L</div><div class="lr-sub">예상 주유량</div></div>
+      <div class="live-result" id="fuelR3"><div class="lr-big">41,250원</div><div class="lr-sub">예상 유류비</div></div>
+    </div>
+  </section>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+var fmt = function(n){
+  if(n===null||isNaN(n)) return '\u2014';
+  var a=Math.abs(n);
+  if(a===Infinity) return '\u221e';
+  if(a>=1) return parseFloat(n.toFixed(2)).toLocaleString('ko-KR');
+  return parseFloat(n.toFixed(4)).toLocaleString('ko-KR',{maximumFractionDigits:4});
+};
+
+function liveFuel1(){
+  var d=+document.getElementById('fuelDist').value,l=+document.getElementById('fuelLiter').value;
+  if(!l){document.getElementById('fuelR1').innerHTML='<div class="lr-big">\u2014</div>';return;}
+  document.getElementById('fuelR1').innerHTML='<div class="lr-big">'+fmt(d/l)+' km/L</div><div class="lr-sub">'+fmt(d)+'km \xf7 '+fmt(l)+'L</div>';
+}
+function liveFuel2(){
+  var d=+document.getElementById('fuelTripDist').value,e=+document.getElementById('fuelTripEff').value,p=+document.getElementById('fuelTripPrice').value;
+  if(!e)return;
+  var liters=d/e,cost=liters*p;
+  document.getElementById('fuelR2').innerHTML='<div class="lr-big">'+fmt(liters)+'L</div><div class="lr-sub">\uc608\uc0c1 \uc8fc\uc720\ub7c9</div>';
+  document.getElementById('fuelR3').innerHTML='<div class="lr-big">'+Math.round(cost).toLocaleString()+'\uc6d0</div><div class="lr-sub">\uc608\uc0c1 \uc720\ub958\ube44</div>';
+}
+['fuelDist','fuelLiter'].forEach(function(id){document.getElementById(id).addEventListener('input',liveFuel1);});
+['fuelTripDist','fuelTripEff','fuelTripPrice'].forEach(function(id){document.getElementById(id).addEventListener('input',liveFuel2);});
+})();
+</script>
+</body>
+</html>

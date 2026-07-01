@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>할인가 계산기 - 할인율 적용가·1+1 단가 비교 | 모든 계산기</title>
+<meta name="description" content="할인율 적용가와 1+1/2+1 단가를 비교해요." />
+<link rel="canonical" href="https://moduncalc.com/daily/discount/">
+<meta property="og:type" content="website" />
+<meta property="og:title" content="할인가 계산기 - 할인율 적용가·1+1 단가 비교 | 모든 계산기" />
+<meta property="og:description" content="할인율 적용가와 1+1/2+1 단가를 비교해요." />
+<meta property="og:url" content="https://moduncalc.com/daily/discount/" />
+<meta name="robots" content="index, follow" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+<style>
+  .live-result{background:var(--primary-weak);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+  .live-result .lr-big{font-size:28px;font-weight:800;color:var(--primary-dark);letter-spacing:-.5px}
+  .live-result .lr-sub{font-size:12px;color:var(--sub);margin-top:4px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid-2 .live-result{margin-top:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">쇼핑 계산</div>
+    <h1>할인가 계산기</h1>
+    <p>할인율 적용가와 1+1/2+1 단가를 비교해요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">💰</span>할인가 계산</h2>
+    <div class="field">
+      <label class="lbl">원래 가격</label>
+      <div class="amt-row"><input type="number" id="discPrice" value="50000" inputmode="numeric"><span class="unit">원</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">할인율</label>
+      <div class="amt-row"><input type="number" id="discRate" value="30" min="0" max="100" inputmode="numeric"><span class="unit">%</span></div>
+      <input type="range" id="discRange" min="0" max="90" step="5" value="30">
+    </div>
+    <div class="grid-2">
+      <div class="live-result" id="discR1"><div class="lr-big">35,000원</div><div class="lr-sub">할인 적용가</div></div>
+      <div class="live-result" id="discR2"><div class="lr-big">15,000원</div><div class="lr-sub">할인 금액</div></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">🔢</span>1+1 / 2+1 단가 비교</h2>
+    <div class="field">
+      <label class="lbl">상품 가격</label>
+      <div class="amt-row"><input type="number" id="bundlePrice" value="3000" inputmode="numeric"><span class="unit">원</span></div>
+    </div>
+    <div class="grid-2">
+      <div class="live-result" id="bundleR1"><div class="lr-big">1,500원</div><div class="lr-sub">1+1 개당 단가</div></div>
+      <div class="live-result" id="bundleR2"><div class="lr-big">1,000원</div><div class="lr-sub">2+1 개당 단가</div></div>
+    </div>
+  </section>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+function liveDisc(){
+  var p=+document.getElementById('discPrice').value,r=+document.getElementById('discRate').value;
+  var sale=p*(1-r/100),save=p*r/100;
+  document.getElementById('discR1').innerHTML='<div class="lr-big">'+Math.round(sale).toLocaleString()+'\uc6d0</div><div class="lr-sub">\ud560\uc778 \uc801\uc6a9\uac00</div>';
+  document.getElementById('discR2').innerHTML='<div class="lr-big">'+Math.round(save).toLocaleString()+'\uc6d0</div><div class="lr-sub">\ud560\uc778 \uae08\uc561 ('+r+'%)</div>';
+}
+function liveBundle(){
+  var p=+document.getElementById('bundlePrice').value;
+  document.getElementById('bundleR1').innerHTML='<div class="lr-big">'+Math.round(p/2).toLocaleString()+'\uc6d0</div><div class="lr-sub">1+1 \uac1c\ub2f9 \ub2e8\uac00 (50%\u2193)</div>';
+  document.getElementById('bundleR2').innerHTML='<div class="lr-big">'+Math.round(p/3).toLocaleString()+'\uc6d0</div><div class="lr-sub">2+1 \uac1c\ub2f9 \ub2e8\uac00 (67%\u2193)</div>';
+}
+['discPrice','discRate','discRange'].forEach(function(id){document.getElementById(id).addEventListener('input',function(e){
+  if(id==='discRange')document.getElementById('discRate').value=e.target.value;
+  if(id==='discRate')document.getElementById('discRange').value=e.target.value;
+  liveDisc();
+});});
+document.getElementById('bundlePrice').addEventListener('input',liveBundle);
+})();
+</script>
+</body>
+</html>

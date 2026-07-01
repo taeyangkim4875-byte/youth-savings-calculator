@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+
+<title>종합소득세 계산기 - 2026 누진세율 적용 | 모든 계산기</title>
+<meta name="description" content="2026년 누진세율을 적용한 종합소득세 예상 세액을 간편하게 계산하세요.">
+<link rel="canonical" href="https://moduncalc.com/tax/income/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="종합소득세 계산기 - 2026 누진세율 적용 | 모든 계산기">
+<meta property="og:description" content="2026년 누진세율을 적용한 종합소득세 예상 세액을 간편하게 계산하세요.">
+<meta property="og:url" content="https://moduncalc.com/tax/income/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">2026 세율 기준</div>
+    <h1>종합소득세 계산기</h1>
+    <p>종합소득세 누진세율을 적용한 예상 세액을 계산해요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">1</span>소득 정보</h2>
+
+    <div class="field">
+      <label class="lbl">총 수입금액</label>
+      <div class="amt-row">
+        <input type="number" id="totalIncome" value="5000" min="0" inputmode="numeric">
+        <span class="unit">만원</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">필요경비/소득공제</label>
+      <div class="amt-row">
+        <input type="number" id="deduction" value="1000" min="0" inputmode="numeric">
+        <span class="unit">만원</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">인적공제 인원</label>
+      <select id="taxDependents">
+        <option value="1" selected>1명</option>
+        <option value="2">2명</option>
+        <option value="3">3명</option>
+        <option value="4">4명</option>
+        <option value="5">5명</option>
+      </select>
+    </div>
+  </section>
+
+  <div id="incomeResults"></div>
+
+  <footer>
+    <b>계산 기준</b><br>
+    · 종합소득세: 2026년 기준 누진세율 8단계 (6%~45%)<br>
+    · 지방소득세: 소득세 × 10%<br>
+    · 인적공제: 1인당 150만원
+
+    <div class="disclaimer">
+      <b>면책 안내</b><br>
+      이 계산기는 일반적인 세율을 기반으로 한 추정치를 제공하며, 실제 세금과 다를 수 있습니다. 정확한 세액은 국세청 홈택스 또는 세무사에게 확인하세요. 본 서비스 이용으로 발생한 손해에 대해 책임지지 않습니다.
+    </div>
+  </footer>
+
+  <div class="cta-bar"><button class="cta" id="calcBtn">세액 계산하기</button></div>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+/* ---- 종합소득세 ---- */
+document.getElementById('calcBtn').addEventListener('click', calcIncome);
+
+function progressiveTax(base) {
+  if (base <= 14000000) return base * 0.06;
+  if (base <= 50000000) return 840000 + (base - 14000000) * 0.15;
+  if (base <= 88000000) return 6240000 + (base - 50000000) * 0.24;
+  if (base <= 150000000) return 15360000 + (base - 88000000) * 0.35;
+  if (base <= 300000000) return 37060000 + (base - 150000000) * 0.38;
+  if (base <= 500000000) return 94060000 + (base - 300000000) * 0.40;
+  if (base <= 1000000000) return 174060000 + (base - 500000000) * 0.42;
+  return 384060000 + (base - 1000000000) * 0.45;
+}
+
+function calcIncome() {
+  const income = (+document.getElementById('totalIncome').value || 0) * 10000;
+  const deduction = (+document.getElementById('deduction').value || 0) * 10000;
+  const dependents = +document.getElementById('taxDependents').value;
+  const personalDeduction = dependents * 1500000;
+
+  const taxBase = Math.max(0, income - deduction - personalDeduction);
+  const incomeTax = progressiveTax(taxBase);
+  const localTax = Math.round(incomeTax * 0.1);
+  const totalTax = Math.round(incomeTax) + localTax;
+  const effectiveRate = income > 0 ? (totalTax / income * 100) : 0;
+
+  let bracket = '';
+  if (taxBase <= 14000000) bracket = '6%';
+  else if (taxBase <= 50000000) bracket = '15%';
+  else if (taxBase <= 88000000) bracket = '24%';
+  else if (taxBase <= 150000000) bracket = '35%';
+  else if (taxBase <= 300000000) bracket = '38%';
+  else if (taxBase <= 500000000) bracket = '40%';
+  else if (taxBase <= 1000000000) bracket = '42%';
+  else bracket = '45%';
+
+  document.getElementById('incomeResults').innerHTML = `
+    <div class="rcard best">
+      <span class="tag blue">종합소득세 계산 결과</span>
+      <h3>적용 최고세율: ${bracket}</h3>
+      <div class="breakdown" style="border:none;padding-top:4px">
+        <div class="brow"><span class="k">과세표준</span><span class="v">${won(taxBase)}</span></div>
+        <div class="brow" style="color:var(--primary-dark)"><span class="k" style="color:var(--primary-dark);font-weight:800">산출세액</span><span class="v" style="color:var(--primary-dark);font-weight:800">${won(Math.round(incomeTax))}</span></div>
+        <div class="brow"><span class="k">지방소득세 (10%)</span><span class="v">${won(localTax)}</span></div>
+        <div class="brow" style="font-size:15px"><span class="k" style="font-weight:800">총 세금</span><span class="v" style="font-weight:800">${won(totalTax)}</span></div>
+      </div>
+      <div class="effect-box" style="margin-top:16px">
+        <div class="eff-top">실효세율</div>
+        <div class="eff-num">${effectiveRate.toFixed(2)}%</div>
+        <div class="eff-sub">총 수입금액 대비 총 세금 비율</div>
+      </div>
+    </div>`;
+
+  document.getElementById('incomeResults').scrollIntoView({behavior:'smooth',block:'start'});
+}
+</script>
+</body>
+</html>

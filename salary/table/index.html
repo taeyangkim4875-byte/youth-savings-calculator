@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+
+<title>2026 연봉 실수령액 표 - 연봉별 월 실수령액 한눈에 비교 | 모든 계산기</title>
+<meta name="description" content="2026년 연봉 2,000만원~1억 5,000만원 실수령액 표. 4대보험·소득세 공제 후 월 실수령액을 한눈에 비교하세요. 행을 터치하면 상세 공제 내역도 확인 가능.">
+<link rel="canonical" href="https://moduncalc.com/salary/table/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="2026 연봉 실수령액 표 - 연봉별 월 실수령액 한눈에 비교 | 모든 계산기">
+<meta property="og:description" content="2026년 연봉 2,000만원~1억 5,000만원 실수령액 표. 4대보험·소득세 공제 후 월 실수령액을 한눈에 비교하세요.">
+<meta property="og:url" content="https://moduncalc.com/salary/table/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">2026 4대보험 기준 · 부양가족 1명</div>
+    <h1>연봉 실수령액 표</h1>
+    <p>연봉 2,000만~1억 5,000만원까지 실수령액을 한눈에 비교하세요.</p>
+  </header>
+
+  <div class="card" style="padding:16px 14px">
+    <p style="font-size:12px;color:var(--sub);text-align:center;margin:0 0 12px">각 행을 터치하면 상세 공제 내역을 볼 수 있어요</p>
+    <table class="dtable" id="netPayTable" style="font-size:14px">
+      <thead>
+        <tr><th style="text-align:left">연봉(세전)</th><th>공제 합계</th><th>월 실수령액</th></tr>
+      </thead>
+      <tbody id="netPayTableBody"></tbody>
+    </table>
+  </div>
+  <p class="tbl-src" style="text-align:center;padding:0 16px">부양가족 1명(본인), 비과세 식대 월 20만원 기준 · 2026년 4대보험 요율 적용</p>
+
+  <footer>
+    <b>계산 가정</b><br>
+    · 국민연금 4.75% (상한 637만) · 건강 3.595% · 장기요양 13.14% · 고용 0.9%<br>
+    · 소득세: 간이세액 기준 · 식대 비과세 월 20만원
+    <div class="disclaimer">이 표는 일반적인 요율 기준 추정치이며, 실제 급여와 다를 수 있습니다.</div>
+  </footer>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+/* ===== Shared functions ===== */
+function netPay(grossMan, dependents, useNontax){
+  var gross = grossMan * 10000;
+  var nontaxYear = useNontax ? 200000 * 12 : 0;
+  var taxableGross = Math.max(0, gross - nontaxYear);
+  var wageM = taxableGross / 12;
+  var npBase = Math.min(wageM, 6370000);
+  var np = npBase * 0.0475 * 12;
+  var hi = wageM * 0.03595 * 12;
+  var ltc = hi * 0.1314;
+  var ei = wageM * 0.009 * 12;
+  var insurance = np + hi + ltc + ei;
+  var ded = earnedIncomeDeduction(taxableGross);
+  var earnedIncome = Math.max(0, taxableGross - ded);
+  var personal = dependents * 1500000;
+  var base = Math.max(0, earnedIncome - personal - np - hi - ltc - ei);
+  var calcTax = progressiveTax(base);
+  var credit = earnedTaxCredit(calcTax, taxableGross);
+  var incomeTax = Math.max(0, calcTax - credit);
+  var localTax = incomeTax * 0.10;
+  var totalDeduct = insurance + incomeTax + localTax;
+  var netYear = gross - totalDeduct;
+  return {netYear:netYear, netMonth:netYear/12, insurance:insurance, incomeTax:incomeTax, localTax:localTax, np:np, hi:hi+ltc, ei:ei, deductMonth:totalDeduct/12};
+}
+
+function earnedIncomeDeduction(g){
+  var d;
+  if(g<=5000000) d=g*0.7;
+  else if(g<=15000000) d=3500000+(g-5000000)*0.4;
+  else if(g<=45000000) d=7500000+(g-15000000)*0.15;
+  else if(g<=100000000) d=12000000+(g-45000000)*0.05;
+  else d=14750000+(g-100000000)*0.02;
+  return Math.min(d,20000000);
+}
+
+function progressiveTax(base){
+  if(base<=14000000) return base*0.06;
+  if(base<=50000000) return 840000+(base-14000000)*0.15;
+  if(base<=88000000) return 6240000+(base-50000000)*0.24;
+  if(base<=150000000) return 15360000+(base-88000000)*0.35;
+  if(base<=300000000) return 37060000+(base-150000000)*0.38;
+  if(base<=500000000) return 94060000+(base-300000000)*0.40;
+  if(base<=1000000000) return 174060000+(base-500000000)*0.42;
+  return 384060000+(base-1000000000)*0.45;
+}
+
+function earnedTaxCredit(calcTax, g){
+  var credit = calcTax<=1300000 ? calcTax*0.55 : 715000+(calcTax-1300000)*0.30;
+  var cap;
+  if(g<=33000000) cap=740000;
+  else if(g<=70000000) cap=Math.max(660000,740000-(g-33000000)*0.008);
+  else if(g<=120000000) cap=Math.max(500000,660000-(g-70000000)*0.5);
+  else cap=Math.max(200000,500000-(g-120000000)*0.5);
+  return Math.min(credit,cap);
+}
+
+/* ===== Net pay table (3열 + 클릭 펼치기) ===== */
+(function(){
+  // 2000~6000: 100만 단위, 6000~10000: 200만 단위, 10000~15000: 500만 단위
+  var salaries=[];
+  for(var i=2000;i<=6000;i+=100) salaries.push(i);
+  for(var i=6200;i<=10000;i+=200) salaries.push(i);
+  for(var i=10500;i<=15000;i+=500) salaries.push(i);
+
+  var tbody=document.getElementById('netPayTableBody');
+  var fmtMan=function(v){return Math.round(v/10000).toLocaleString('ko-KR')+'만';};
+  // 연봉 표시: 1억 이상은 "1억 ~만" 형식
+  var fmtSalary=function(s){
+    if(s>=10000){
+      var uk=Math.floor(s/10000);
+      var rest=s%10000;
+      return rest>0? uk+'억 '+rest.toLocaleString('ko-KR')+'만' : uk+'억';
+    }
+    return s.toLocaleString('ko-KR')+'만';
+  };
+
+  // 연령대별 평균 연봉 (통계청 2024 월평균×12, 만원)
+  // 출처: 국세청 2023 귀속(중위·평균), 통계청 2024.12(연령대별)
+  var landmarks={
+    2600:'최저임금 연봉(약 2,588만)',
+    3300:'20대 평균(271만/월)',
+    4300:'전체 중위(4,272만)',
+    4800:'30대 평균(397만/월)',
+    5400:'50대 평균(445만/월)',
+    5500:'전체 평균(5,482만)',
+    5600:'40대 평균(469만/월)'
+  };
+
+  salaries.forEach(function(s){
+    var net=netPay(s,1,true);
+    var deductMonth=net.deductMonth;
+    var label=landmarks[s]||null;
+
+    // 메인 행
+    var tr=document.createElement('tr');
+    tr.style.cursor='pointer';
+    if(label) tr.className='hl';
+    var salaryText=fmtSalary(s);
+    if(label) salaryText+='<div style="font-size:10px;font-weight:700;color:var(--primary);margin-top:2px">'+label+'</div>';
+    tr.innerHTML='<td style="text-align:left;font-weight:800">'+salaryText+'</td>'
+      +'<td style="color:var(--sub)">-'+fmtMan(deductMonth)+'</td>'
+      +'<td style="font-weight:800;color:var(--primary-dark)">'+fmtMan(net.netMonth)+'</td>';
+
+    // 상세 행 (숨김)
+    var detail=document.createElement('tr');
+    detail.style.display='none';
+    detail.innerHTML='<td colspan="3" style="padding:12px 10px;background:var(--bg);border-radius:0">'
+      +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:12px">'
+      +'<div style="color:var(--sub)">월급(세전)</div><div style="font-weight:700;text-align:right">'+won(s*10000/12)+'</div>'
+      +'<div style="color:var(--sub)">국민연금</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won(net.np/12)+'</div>'
+      +'<div style="color:var(--sub)">건강+장기요양</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won(net.hi/12)+'</div>'
+      +'<div style="color:var(--sub)">고용보험</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won(net.ei/12)+'</div>'
+      +'<div style="color:var(--sub)">소득세+지방세</div><div style="font-weight:700;text-align:right;color:#E5484D">-'+won((net.incomeTax+net.localTax)/12)+'</div>'
+      +'<div style="font-weight:800;border-top:1px solid var(--line);padding-top:6px">공제 합계</div><div style="font-weight:800;text-align:right;border-top:1px solid var(--line);padding-top:6px;color:#E5484D">-'+won(deductMonth)+'</div>'
+      +'<div style="font-weight:800">월 실수령액</div><div style="font-weight:800;text-align:right;color:var(--primary-dark)">'+won(net.netMonth)+'</div>'
+      +'<div style="font-weight:800">연 실수령액</div><div style="font-weight:800;text-align:right;color:var(--primary-dark)">'+won(net.netYear)+'</div>'
+      +'</div></td>';
+
+    tr.addEventListener('click',function(){
+      var isOpen=detail.style.display!=='none';
+      detail.style.display=isOpen?'none':'table-row';
+    });
+
+    tbody.appendChild(tr);
+    tbody.appendChild(detail);
+  });
+})();
+</script>
+</body>
+</html>

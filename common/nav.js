@@ -14,38 +14,38 @@
       {label:'도약 vs 미래 비교', hash:''}
     ]},
     {href:'/salary/',ico:'💰', label:'연봉/급여', sub:[
-      {label:'연봉 상위%', hash:'#salary'},
-      {label:'실수령액 표', hash:'#table'},
-      {label:'최저시급·주휴수당', hash:'#minimum'}
+      {label:'연봉 상위%', hash:''},
+      {label:'실수령액 표', hash:'', link:'/salary/table/'},
+      {label:'최저시급·주휴수당', hash:'', link:'/salary/minimum/'}
     ]},
     {href:'/pension/',ico:'👵', label:'연금/보험', sub:[
-      {label:'실업급여', hash:'#jobless'},
-      {label:'국민연금', hash:'#pension'}
+      {label:'실업급여', hash:'', link:'/pension/jobless/'},
+      {label:'국민연금', hash:'', link:'/pension/nps/'}
     ]},
     {href:'/loan/',  ico:'🏠', label:'대출/이자', sub:[
       {label:'원리금균등 vs 원금균등', hash:''}
     ]},
     {href:'/health/',ico:'💪', label:'건강', sub:[
-      {label:'BMI', hash:'#bmi'},
-      {label:'기초대사량', hash:'#bmr'}
+      {label:'BMI', hash:'', link:'/health/bmi/'},
+      {label:'기초대사량', hash:'', link:'/health/bmr/'}
     ]},
     {href:'/daily/', ico:'📅', label:'일상', sub:[
-      {label:'퍼센트', hash:'#percent'},
-      {label:'할인가', hash:'#discount'},
-      {label:'더치페이', hash:'#dutch'},
-      {label:'D-day', hash:'#dday'},
-      {label:'나이', hash:'#age'},
-      {label:'단위변환', hash:'#unit'},
-      {label:'속도·시간', hash:'#speed'},
-      {label:'연비', hash:'#fuel'}
+      {label:'퍼센트', hash:'', link:'/daily/percent/'},
+      {label:'할인가', hash:'', link:'/daily/discount/'},
+      {label:'더치페이', hash:'', link:'/daily/dutch/'},
+      {label:'D-day', hash:'', link:'/daily/dday/'},
+      {label:'나이', hash:'', link:'/daily/age/'},
+      {label:'단위변환', hash:'', link:'/daily/unit/'},
+      {label:'속도·시간', hash:'', link:'/daily/speed/'},
+      {label:'연비', hash:'', link:'/daily/fuel/'}
     ]},
     {href:'/realestate/',ico:'🏢', label:'부동산', sub:[
-      {label:'취득세', hash:'#acqtax'},
-      {label:'전월세 전환', hash:'#convert'}
+      {label:'취득세', hash:'', link:'/realestate/acqtax/'},
+      {label:'전월세 전환', hash:'', link:'/realestate/convert/'}
     ]},
     {href:'/tax/',   ico:'🧾', label:'세금', sub:[
-      {label:'부가세', hash:'#vat'},
-      {label:'종합소득세', hash:'#income'}
+      {label:'부가세', hash:'', link:'/tax/vat/'},
+      {label:'종합소득세', hash:'', link:'/tax/income/'}
     ]}
   ];
 
@@ -59,7 +59,8 @@
     let subHtml = '';
     if(m.sub && m.sub.length > 0){
       const subItems = m.sub.map(s=>{
-        return `<a href="${m.href}${s.hash}" class="sb-sub-item" data-hash="${s.hash}">${s.label}</a>`;
+        var subHref = s.link || (m.href + s.hash);
+        return `<a href="${subHref}" class="sb-sub-item" data-hash="${s.hash}">${s.label}</a>`;
       }).join('');
       subHtml = `<div class="sb-sub${open}">${subItems}</div>`;
     }

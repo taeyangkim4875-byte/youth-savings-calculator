@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+
+<title>부가세 계산기 - 공급가액·부가세 역산 | 모든 계산기</title>
+<meta name="description" content="공급가액 또는 합계금액에서 부가세를 간편하게 역산하세요.">
+<link rel="canonical" href="https://moduncalc.com/tax/vat/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="부가세 계산기 - 공급가액·부가세 역산 | 모든 계산기">
+<meta property="og:description" content="공급가액 또는 합계금액에서 부가세를 간편하게 역산하세요.">
+<meta property="og:url" content="https://moduncalc.com/tax/vat/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">부가가치세 10%</div>
+    <h1>부가세 계산기</h1>
+    <p>공급가액 또는 합계금액에서 부가세를 역산해요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">1</span>금액 입력</h2>
+
+    <div class="field">
+      <label class="lbl">입력 방식</label>
+      <div class="seg" id="segVatMode">
+        <button class="on" data-mode="supply">공급가액</button>
+        <button data-mode="total">합계금액</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">금액</label>
+      <div class="amt-row">
+        <input type="number" id="vatAmount" value="1000000" min="0" inputmode="numeric">
+        <span class="unit">원</span>
+      </div>
+    </div>
+  </section>
+
+  <div id="vatResults"></div>
+
+  <footer>
+    <b>계산 기준</b><br>
+    · 부가세: 부가가치세율 10% 적용
+
+    <div class="disclaimer">
+      <b>면책 안내</b><br>
+      이 계산기는 일반적인 세율을 기반으로 한 추정치를 제공하며, 실제 세금과 다를 수 있습니다. 정확한 세액은 국세청 홈택스 또는 세무사에게 확인하세요. 본 서비스 이용으로 발생한 손해에 대해 책임지지 않습니다.
+    </div>
+  </footer>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+/* ---- 부가세 (LIVE) ---- */
+let vatMode = 'supply';
+
+document.getElementById('segVatMode').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-mode]');
+  if (!btn) return;
+  document.querySelectorAll('#segVatMode button').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  vatMode = btn.dataset.mode;
+  calcVat();
+});
+
+document.getElementById('vatAmount').addEventListener('input', calcVat);
+
+function calcVat() {
+  const amt = Math.max(0, +document.getElementById('vatAmount').value || 0);
+  let supply, vat, total;
+
+  if (vatMode === 'supply') {
+    supply = amt;
+    vat = Math.round(amt * 0.1);
+    total = supply + vat;
+  } else {
+    total = amt;
+    supply = Math.round(amt / 1.1);
+    vat = total - supply;
+  }
+
+  document.getElementById('vatResults').innerHTML = `
+    <div class="rcard best">
+      <span class="tag blue">부가세 계산 결과</span>
+      <div class="breakdown" style="border:none;padding-top:0">
+        <div class="brow"><span class="k">공급가액</span><span class="v">${won(supply)}</span></div>
+        <div class="brow" style="color:var(--primary-dark)"><span class="k" style="color:var(--primary-dark);font-weight:800">부가세 (10%)</span><span class="v" style="color:var(--primary-dark);font-weight:800">${won(vat)}</span></div>
+        <div class="brow"><span class="k" style="font-weight:800">합계금액</span><span class="v" style="font-weight:800">${won(total)}</span></div>
+      </div>
+    </div>`;
+}
+
+// 초기 계산
+calcVat();
+</script>
+</body>
+</html>

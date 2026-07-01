@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+
+<!-- AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+
+<title>기초대사량 계산기 - 일일 권장 칼로리 | 모든 계산기</title>
+<meta name="description" content="성별, 나이, 키, 체중으로 기초대사량(BMR)과 일일 권장 칼로리(TDEE)를 계산하세요.">
+<link rel="canonical" href="https://moduncalc.com/health/bmr/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="기초대사량 계산기 - 일일 권장 칼로리 | 모든 계산기">
+<meta property="og:description" content="성별, 나이, 키, 체중으로 기초대사량(BMR)과 일일 권장 칼로리(TDEE)를 계산하세요.">
+<meta property="og:url" content="https://moduncalc.com/health/bmr/">
+<meta name="robots" content="index, follow">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Mifflin-St Jeor 공식</div>
+    <h1>기초대사량 계산기</h1>
+    <p>성별·나이·신체 정보로 기초대사량과 일일 권장 칼로리를 계산하세요.</p>
+  </header>
+
+  <div class="card">
+    <div class="sec-title"><span class="num">1</span> 신체 정보</div>
+
+    <div class="field">
+      <label class="lbl">성별</label>
+      <div class="seg" id="segGender">
+        <button class="on" data-val="male">남성</button>
+        <button data-val="female">여성</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">나이</label>
+      <div class="amt-row">
+        <input type="number" id="bmrAge" value="30" min="10" max="100">
+        <span class="unit">세</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">키</label>
+      <div class="amt-row">
+        <input type="number" id="bmrHeight" value="170" min="130" max="210">
+        <span class="unit">cm</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">체중</label>
+      <div class="amt-row">
+        <input type="number" id="bmrWeight" value="70" min="30" max="200">
+        <span class="unit">kg</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="lbl">활동량</label>
+      <select id="activity">
+        <option value="1.2">거의 없음 (좌식 생활)</option>
+        <option value="1.375">가벼운 운동 (주 1~3회)</option>
+        <option value="1.55" selected>보통 운동 (주 3~5회)</option>
+        <option value="1.725">활발한 운동 (주 6~7회)</option>
+        <option value="1.9">매우 활발 (운동선수 수준)</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="bmrResults"></div>
+
+  <footer>
+    <div class="disclaimer">
+      <b>⚠️ 참고 안내</b><br>
+      기초대사량은 Mifflin-St Jeor 공식 기반 추정값이며, 개인의 체성분·건강 상태에 따라 달라질 수 있습니다. 식단 조절은 전문가와 상담 후 진행하세요.
+    </div>
+  </footer>
+
+</div><!-- .wrap -->
+
+<!-- CTA -->
+<div class="cta-bar">
+  <button class="cta" id="calcBtn">칼로리 계산하기</button>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+
+  document.querySelectorAll('#segGender button').forEach(btn=>{
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('#segGender button').forEach(b=>b.classList.remove('on'));
+      this.classList.add('on');
+    });
+  });
+
+  document.getElementById('calcBtn').addEventListener('click', calcBMR);
+
+  function calcBMR(){
+    const gender = document.querySelector('#segGender button.on').dataset.val;
+    const age = parseFloat(document.getElementById('bmrAge').value);
+    const h = parseFloat(document.getElementById('bmrHeight').value);
+    const w = parseFloat(document.getElementById('bmrWeight').value);
+    const actMul = parseFloat(document.getElementById('activity').value);
+
+    if(!age||!h||!w) return;
+
+    let bmr;
+    if(gender==='male'){
+      bmr = 10*w + 6.25*h - 5*age + 5;
+    } else {
+      bmr = 10*w + 6.25*h - 5*age - 161;
+    }
+
+    const tdee = bmr * actMul;
+    const dietCal = tdee - 500;
+
+    const fmt = n => Math.round(n).toLocaleString('ko-KR');
+
+    const el = document.getElementById('bmrResults');
+    el.innerHTML = `
+      <div class="rcard best">
+        <span class="tag blue">Mifflin-St Jeor</span>
+        <div class="pct-hero">
+          <div class="pct-top">기초대사량 (BMR)</div>
+          <div class="pct-big">${fmt(bmr)}<small>kcal</small></div>
+          <div class="pct-sub">아무것도 하지 않아도 소모되는 칼로리</div>
+        </div>
+        <div class="breakdown">
+          <div class="brow"><span class="k">성별</span><span class="v">${gender==='male'?'남성':'여성'}</span></div>
+          <div class="brow"><span class="k">나이</span><span class="v">${age}세</span></div>
+          <div class="brow"><span class="k">키 / 체중</span><span class="v">${h} cm / ${w} kg</span></div>
+          <div class="brow"><span class="k">활동 계수</span><span class="v">× ${actMul}</span></div>
+        </div>
+      </div>
+
+      <div class="rcard">
+        <span class="tag green">일일 권장 칼로리</span>
+        <div class="pct-hero">
+          <div class="pct-top">TDEE (총 에너지 소비량)</div>
+          <div class="pct-big" style="color:var(--green)">${fmt(tdee)}<small>kcal</small></div>
+          <div class="pct-sub">현재 활동량 기준 하루 권장 칼로리</div>
+        </div>
+        <div class="breakdown">
+          <div class="brow"><span class="k">기초대사량</span><span class="v">${fmt(bmr)} kcal</span></div>
+          <div class="brow"><span class="k">활동 계수</span><span class="v">× ${actMul}</span></div>
+          <div class="brow green"><span class="k">TDEE</span><span class="v">${fmt(tdee)} kcal</span></div>
+        </div>
+        <div class="effect-box">
+          <div class="eff-top">🔥 다이어트 칼로리 (TDEE − 500)</div>
+          <div class="eff-num">${fmt(dietCal)} kcal</div>
+          <div class="eff-sub">주당 약 0.45kg 감량 목표 시 권장 섭취량</div>
+        </div>
+      </div>
+    `;
+    el.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+})();
+</script>
+</body>
+</html>

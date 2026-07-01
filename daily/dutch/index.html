@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>더치페이 계산기 - N분의1·팁 계산 | 모든 계산기</title>
+<meta name="description" content="N분의1 금액과 팁을 계산해요." />
+<link rel="canonical" href="https://moduncalc.com/daily/dutch/">
+<meta property="og:type" content="website" />
+<meta property="og:title" content="더치페이 계산기 - N분의1·팁 계산 | 모든 계산기" />
+<meta property="og:description" content="N분의1 금액과 팁을 계산해요." />
+<meta property="og:url" content="https://moduncalc.com/daily/dutch/" />
+<meta name="robots" content="index, follow" />
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NX4JK10SS6"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-NX4JK10SS6');</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3741035032582828" crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="/common/style.css">
+<style>
+  .live-result{background:var(--primary-weak);border-radius:14px;padding:16px;text-align:center;margin-top:12px}
+  .live-result .lr-big{font-size:28px;font-weight:800;color:var(--primary-dark);letter-spacing:-.5px}
+  .live-result .lr-sub{font-size:12px;color:var(--sub);margin-top:4px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid-2 .live-result{margin-top:0}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">모임 계산</div>
+    <h1>더치페이 계산기</h1>
+    <p>N분의1 금액과 팁을 계산해요.</p>
+  </header>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">🍽️</span>N분의1 더치페이</h2>
+    <div class="field">
+      <label class="lbl">총 금액</label>
+      <div class="amt-row"><input type="number" id="dutchTotal" value="150000" inputmode="numeric"><span class="unit">원</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">인원 수</label>
+      <div class="amt-row"><input type="number" id="dutchPeople" value="4" min="1" max="100" inputmode="numeric"><span class="unit">명</span></div>
+      <input type="range" id="dutchRange" min="2" max="20" step="1" value="4">
+    </div>
+    <div class="live-result" id="dutchR"><div class="lr-big">37,500원</div><div class="lr-sub">1인당 금액</div></div>
+  </section>
+
+  <section class="card">
+    <h2 class="sec-title"><span class="num">💸</span>팁 계산기</h2>
+    <div class="field">
+      <label class="lbl">결제 금액</label>
+      <div class="amt-row"><input type="number" id="tipTotal" value="100000" inputmode="numeric"><span class="unit">원</span></div>
+    </div>
+    <div class="field">
+      <label class="lbl">팁 비율</label>
+      <div class="seg" id="segTip">
+        <button data-v="5">5%</button>
+        <button data-v="10" class="on">10%</button>
+        <button data-v="15">15%</button>
+        <button data-v="20">20%</button>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="live-result" id="tipR1"><div class="lr-big">10,000원</div><div class="lr-sub">팁 금액</div></div>
+      <div class="live-result" id="tipR2"><div class="lr-big">110,000원</div><div class="lr-sub">총 결제액</div></div>
+    </div>
+  </section>
+</div>
+
+<script src="/common/nav.js"></script>
+<script>
+(function(){
+function liveDutch(){
+  var t=+document.getElementById('dutchTotal').value,p=+document.getElementById('dutchPeople').value;
+  if(!p)return;
+  var per=Math.ceil(t/p);
+  document.getElementById('dutchR').innerHTML='<div class="lr-big">'+per.toLocaleString()+'\uc6d0</div><div class="lr-sub">1\uc778\ub2f9 ('+p+'\uba85)</div>';
+}
+var tipRate=10;
+function liveTip(){
+  var t=+document.getElementById('tipTotal').value;
+  var tip=Math.round(t*tipRate/100);
+  document.getElementById('tipR1').innerHTML='<div class="lr-big">'+tip.toLocaleString()+'\uc6d0</div><div class="lr-sub">\ud301 \uae08\uc561 ('+tipRate+'%)</div>';
+  document.getElementById('tipR2').innerHTML='<div class="lr-big">'+(t+tip).toLocaleString()+'\uc6d0</div><div class="lr-sub">\ucd1d \uacb0\uc81c\uc561</div>';
+}
+['dutchTotal','dutchPeople','dutchRange'].forEach(function(id){document.getElementById(id).addEventListener('input',function(e){
+  if(id==='dutchRange')document.getElementById('dutchPeople').value=e.target.value;
+  if(id==='dutchPeople'){var v=Math.max(1,+e.target.value||1);document.getElementById('dutchRange').value=Math.min(20,v);}
+  liveDutch();
+});});
+document.querySelectorAll('#segTip button').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('#segTip button').forEach(function(x){x.classList.remove('on');});
+    b.classList.add('on');tipRate=+b.dataset.v;liveTip();
+  });
+});
+document.getElementById('tipTotal').addEventListener('input',liveTip);
+})();
+</script>
+</body>
+</html>
