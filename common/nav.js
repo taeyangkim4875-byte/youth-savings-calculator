@@ -1,3 +1,12 @@
+/* 파비콘 자동 주입 */
+(function(){
+  const link = document.createElement('link');
+  link.rel = 'icon';
+  link.type = 'image/svg+xml';
+  link.href = '/favicon.svg';
+  document.head.appendChild(link);
+})();
+
 /* 사이드바 자동 생성 (하위 메뉴 포함) */
 (function(){
   const MENUS = [
